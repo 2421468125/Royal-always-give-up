@@ -1,0 +1,5 @@
+﻿Id,Name,ChineseName,Type,Value,Color,Cost,Description,
+1,anger,愤怒,攻击,common,red,0,造成6点伤害。\n在弃牌堆放入一张此牌的复制品。,
+2,strike_R,打击 ,攻击,initial,red,1,造成6点伤害。,
+3,defend_R,防御,技能,initial,red,1,获得5点格挡。,
+
