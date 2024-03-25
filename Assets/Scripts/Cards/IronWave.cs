@@ -1,21 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.XR;
 
-public class Strike_R : BaseCards
+public class IronWave : BaseCards
 {
     public int damage;
-    public Strike_R(): base("strike_R")
+    public int defense;
+    public IronWave() : base("ironWave")
     {
-        damage = 6;
+        damage = 5;
+        defense = 5;
     }
 
     public override void Use(Character target)
     {
-        
         int real_damage = battle_manager.power(1, CardManager.hero, target, damage);
         target.Hurt(real_damage);
+
+        int real_defend = battle_manager.power(2, CardManager.hero, CardManager.hero, defense);
+        CardManager.hero.Defend(real_defend);
+
     }
 }
-

@@ -5,6 +5,7 @@ using System.Globalization;
 using JetBrains.Annotations;
 using UnityEngine.Timeline;
 using UnityEngine.SceneManagement;
+using System.Security.Cryptography;
 
 public class battleManager : MonoBehaviour
 {
@@ -36,6 +37,8 @@ public class battleManager : MonoBehaviour
     }
     private void phase2()
     { // 回合开始
+        Hero.dynamicBuf["fangyu"] = 0;
+        Hero.UpdateState();
         Hero.energy = Mathf.Max(Hero.energy, Hero.max_energy);
         CM.StartTurn();
     }
@@ -61,6 +64,7 @@ public class battleManager : MonoBehaviour
     { // 我方回合结束
         if (Hero.dynamicBuf["xuruo"] != 0) { Hero.dynamicBuf["xuruo"]--; }
         if (Hero.dynamicBuf["cuiruo"] != 0) { Hero.dynamicBuf["cuiruo"]--; }
+        Hero.UpdateState();
     }
     private void phase6_2()
     { // 敌人回合开始
@@ -132,16 +136,16 @@ public class battleManager : MonoBehaviour
         Dictionary<string, int> dstBuf = dst.dynamicBuf;
         float realAttack = (float)val + (float)srcBuf["liliang"];
         if (dstBuf["yishang"] != 0) realAttack *= 1.5f;
-        if (srcBuf["xuruo"] != 0) realAttack *= 0.5f;
+        if (srcBuf["xuruo"] != 0) realAttack *= 0.75f;
         if (dstBuf["jinji"] != 0) dst.Hurt(dstBuf["jinji"]);
         int realAttackToInt = (int)realAttack;
         return realAttackToInt;
     }
-    private int defend(Character src, Character dst, int val)
+    public int defend(Character src, Character dst, int val)
     { // 3操作数，不需要dst
-        Dictionary<string, int> srcBuf = src.dynamicBuf;
-        float realDefend = (float)val + (float)srcBuf["minjie"];
-        if (srcBuf["cuiruo"] != 0) realDefend *= 0.5f;
+        Dictionary<string, int> dstBuf = dst.dynamicBuf;
+        float realDefend = (float)val + (float)dstBuf["minjie"];
+        if (dstBuf["cuiruo"] != 0) realDefend *= 0.75f;
         int realDefendToInt = (int)realDefend;
         return realDefendToInt;
     }

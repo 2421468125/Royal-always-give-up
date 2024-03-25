@@ -20,7 +20,6 @@ public class Enemy : Character
     public float speed=20f;
     CharacterManager characterManager;
     public int damage;
-    public int defend;
     public Bloodbar bar;
     private Canvas canvas;
     public Bounds bound;
@@ -28,8 +27,8 @@ public class Enemy : Character
     GameObject intention_obj;
     public int State;//enemy的状态：碰撞前后
     public TextMeshPro intention;
-    static public Vector3 IntentionMoveUp = new Vector3(0, 2,0);
-    static Hero hero;
+    static public Vector3 IntentionMoveUp = new Vector3(0, 3,0);
+    static public Hero hero;
 
     public void Start()
     {
@@ -37,8 +36,8 @@ public class Enemy : Character
         //buff=gameObject.AddComponent<Getbuff>(); 
         base.Start();
         canvas = FindObjectOfType<Canvas>();
-        max_health=10;
-        now_health=10;
+        max_health=30;
+        now_health=30;
         attack=true;
         dir=false;
         begin=transform.localPosition;
@@ -49,10 +48,9 @@ public class Enemy : Character
         fward=new(-1,0,0);
         go= Instantiate(Resources.Load("Slider") as GameObject,canvas.transform);
         bar=go.GetComponent<Bloodbar>();
-        bar.transform.localPosition = new Vector3(0, -180, 0);
+        bar.transform.localPosition = new Vector3(45, -70, 0) + Vector3.right* (int)(transform.localPosition.x / 3) * 140;
         State =0;
-        Vector3 v=new (transform.localPosition.x,0,0);
-        bar.transform.localPosition += Vector3.right * 11f + v * 87.2f;
+
 
         SetIntention();
     }
@@ -91,11 +89,8 @@ public class Enemy : Character
     // Update is called once per frame
 
     // 选择敌人
-    private void OnMouseDown()
-    {
-        if (CardManager.card_up != null)
-            CardManager.target = this;
-    }
+    public virtual string Getintension() { return ""; }
+    public virtual void Conductintension() { }
 
     void Update()
     {

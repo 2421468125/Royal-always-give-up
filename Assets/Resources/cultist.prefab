@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 8100871798048273246}
   - component: {fileID: 4343512417596697503}
-  - component: {fileID: 8699343339873183143}
   - component: {fileID: 5116032381381909769}
+  - component: {fileID: 7650818780460824902}
   m_Layer: 0
   m_Name: cultist
   m_TagString: Untagged
@@ -28,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 7608292502087491447}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 3.7947812, y: 1.8809844, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -86,31 +86,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &8699343339873183143
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7608292502087491447}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5830beabb1038dd479a7fbe53feacfad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  max_health: 100
-  now_health: 50
-  money: 0
-  dir: 0
-  attack: 0
-  speed: 20
-  damage: 0
-  defend: 0
-  bar: {fileID: 972323583962165889, guid: 2b8ba8cf299c5114c987f7d279cd6cbc, type: 3}
-  bound:
-    m_Center: {x: 0, y: 0, z: 0}
-    m_Extent: {x: 0, y: 0, z: 0}
-  State: 0
 --- !u!61 &5116032381381909769
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -143,10 +118,10 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.06538665, y: 0.56122065}
+  m_Offset: {x: 0.06538665, y: 1.4152579}
   m_SpriteTilingProperty:
     border: {x: 0.94, y: 0.31, z: 0.9, w: 1.9}
-    pivot: {x: 0.48093686, y: 0.2966592}
+    pivot: {x: 0.5, y: 0}
     oldSize: {x: 3.43, y: 2.76}
     newSize: {x: 3.43, y: 2.76}
     adaptiveTilingThreshold: 0.5
@@ -154,5 +129,35 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 3.43, y: 2.76}
+  m_Size: {x: 3.43, y: 2.942195}
   m_EdgeRadius: 0
+--- !u!114 &7650818780460824902
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7608292502087491447}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91cc55ad55c6f3d43a83c93e480fe0c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  max_health: 0
+  now_health: 0
+  money: 0
+  battlemanager: {fileID: 0}
+  StateMoveMent: {x: -1.5, y: 0, z: 0}
+  state_block: {fileID: 0}
+  dir: 0
+  attack: 0
+  speed: 20
+  damage: 0
+  bar: {fileID: 972323583962165889, guid: 2b8ba8cf299c5114c987f7d279cd6cbc, type: 3}
+  bound:
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 0, y: 0, z: 0}
+  State: 0
+  intention: {fileID: 0}
+  yitu: 0
+  choice: 2

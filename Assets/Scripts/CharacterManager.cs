@@ -11,21 +11,22 @@ public class CharacterManager : MonoBehaviour
     Hero Man;
     battleManager battlemanager;
     private int state = 0;
+    static public Dictionary<float, int> enemy_index =  new Dictionary<float, int>();
     // Start is called before the first frame update
     void Awake()
     {
         EnemyList = new List<Enemy>();
-        num=UnityEngine.Random.Range(1,3);
+        num = 2;
 
         // num = 3;
-        createmonster(EnemyList,num);
-        battlemanager=GameObject.Find("battleManager").GetComponent<battleManager>();
+        createmonster(EnemyList, num);
+        battlemanager = GameObject.Find("battleManager").GetComponent<battleManager>();
         GameObject instanceObject = GameObject.Find("Hero");
-        Man=instanceObject.GetComponent<Hero>();
+        Man = instanceObject.GetComponent<Hero>();
         state = 0;
     }
 
-    void start()
+    void Start()
     {
 
     }
@@ -63,7 +64,7 @@ public class CharacterManager : MonoBehaviour
         {
             GameObject s= Instantiate(Resources.Load("cultist") as GameObject);
             ch.Add(s.GetComponent<Enemy>());
-            ch[i - 1].transform.localPosition = new(3 * i - 2, -0.6f, 0); //经验参数
+            ch[i - 1].transform.localPosition = new(3 * i - 2, -1, 0); //经验参数
             ch[i - 1].bar.SetBarPosition(new(400, -180, 0));
             // ch[i - 1].bound = s.GetComponent<SpriteRenderer>().sprite.bounds;
         }
@@ -100,6 +101,12 @@ public class CharacterManager : MonoBehaviour
 
     public void startEnemyturn()
     {
+        foreach (Enemy enemy in EnemyList)
+        {
+            enemy.dynamicBuf["fangyu"] = 0;
+            enemy.UpdateState();
+        }
+
         battlemanager.changeState(7);
         state = 1;
         /*

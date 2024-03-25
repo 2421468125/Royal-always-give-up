@@ -25,13 +25,13 @@ public class Hero: Character
     void Start()
     {
         base.Start();
-        transform.localPosition=new Vector3(-5,1,0);
+        transform.localPosition=new Vector3(-5,-1,0);
         //buff=gameObject.AddComponent<Getbuff>();
         max_health=100;
         now_health=100;
         money=99;
         bar=GameObject.Find("bloodbar2").GetComponent<Bloodbar>();
-        bar.transform.localPosition=new (-420,-180,0);
+        bar.transform.localPosition=new (-195,-70,0);
         max_energy = energy = 3;
         CreateEnergyIcon();
     }

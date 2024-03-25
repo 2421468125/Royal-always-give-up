@@ -83,10 +83,11 @@ public class CardManager : MonoBehaviour {
         battle_manager = GameObject.Find("battleManager").GetComponent<battleManager> ();
         hero = GameObject.Find("Hero").GetComponent<Hero>();
         LoadDictionary();
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < 3; i++)
         {
             draw_card_list.Add(new Strike_R());
             draw_card_list.Add(new Defend_R());
+            draw_card_list.Add(new IronWave());
         }
 
         end_turn_obj1 = new GameObject("EndTurnObject");

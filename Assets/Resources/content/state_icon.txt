@@ -1,9 +1,9 @@
-yishang,vnlnerable
+yishang,vulnerable
 liliang,strength
 xuruo,weak
 minjie,dexterity
-cuiro,frail
+cuiruo,frail
 jinji,thorns
 fangyu,next_turn_block
-yishi,ritual,
+yishi,ritual
 rengongzhipin,artifact
