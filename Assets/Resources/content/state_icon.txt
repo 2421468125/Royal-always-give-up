@@ -1,0 +1,9 @@
+yishang,vnlnerable
+liliang,strength
+xuruo,weak
+minjie,dexterity
+cuiro,frail
+jinji,thorns
+fangyu,next_turn_block
+yishi,ritual,
+rengongzhipin,artifact
