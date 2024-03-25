@@ -10,6 +10,8 @@ public class Bloodbar: MonoBehaviour
     private void Start()
     {
         HP.value=1.0f;   //Value的值介于0-1之间，且为浮点数
+        tx.fontSize = 20;
+        tx.color = Color.white;
     }
     // Update is called once per frame
     void Update()

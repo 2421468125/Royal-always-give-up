@@ -85,8 +85,8 @@ public class CardManager : MonoBehaviour {
         LoadDictionary();
         for (int i = 0; i < 3; i++)
         {
-            draw_card_list.Add(new Strike_R());
-            draw_card_list.Add(new Defend_R());
+
+            draw_card_list.Add(new Anger());
             draw_card_list.Add(new IronWave());
         }
 
@@ -416,6 +416,7 @@ public class CardManager : MonoBehaviour {
             else if (Input.GetMouseButtonUp(0))
             {
                 end_turn_obj1.transform.position = new(end_turn_obj1.transform.position.x, end_turn_obj1.transform.position.y, 0);
+                target = null;
                 battle_manager.changeState(6);
             }
             
@@ -543,7 +544,7 @@ public class BaseCards {
     static private float DeltaForeGround = 0.352f;
     static private float DeltaCardName = 0.894f;
     static private float DeltaDescription = -0.5f;
-    static public CardManager card_manager;
+    public CardManager card_manager;
     public battleManager battle_manager;
 
     private static Vector2 DeltaCardType = new Vector2(0.01f, -0.119f);
@@ -574,6 +575,7 @@ public class BaseCards {
         _chinese_name = CardManager.chinese_name_map[name];
         _tem_cost = _cost;
         battle_manager = GameObject.Find("battleManager").GetComponent<battleManager>();
+        card_manager = GameObject.Find("CardManager").GetComponent<CardManager>();
         set_texture();
 
         GameObject bg_obj = new GameObject("BackGround");

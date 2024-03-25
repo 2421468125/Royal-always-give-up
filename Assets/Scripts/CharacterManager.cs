@@ -43,7 +43,6 @@ public class CharacterManager : MonoBehaviour
             int flag = EnemyList[i].move();
             if(flag == 2)
             {
-                EnemyList[i].enemy_turn();
                 if (state == num)
                 {
                     battlemanager.changeState(8);
@@ -67,6 +66,14 @@ public class CharacterManager : MonoBehaviour
             ch[i - 1].transform.localPosition = new(3 * i - 2, -1, 0); //经验参数
             ch[i - 1].bar.SetBarPosition(new(400, -180, 0));
             // ch[i - 1].bound = s.GetComponent<SpriteRenderer>().sprite.bounds;
+        }
+    }
+    public void Rebuild() //当玩家回合开始时，修改所有enemy的意图
+    {
+        for(int i=0;i<num;i++)
+        {
+            Destroy(EnemyList[i].intention);
+            EnemyList[i].SetIntention();
         }
     }
     public Character Click()
@@ -109,6 +116,7 @@ public class CharacterManager : MonoBehaviour
 
         battlemanager.changeState(7);
         state = 1;
+
         /*
         foreach(Enemy enemy in EnemyList)
         {

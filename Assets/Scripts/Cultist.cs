@@ -38,7 +38,8 @@ public class Cultist:Enemy
                 break;
             }
             case 2: {
-                battlemanager.defend(this,this,10);
+                int real_defend = battlemanager.defend(this,this,10);
+                this.Defend(real_defend);
                 break;
             }
         }

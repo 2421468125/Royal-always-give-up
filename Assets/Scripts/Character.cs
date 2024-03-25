@@ -9,6 +9,7 @@ using UnityEngine;
 public class Character : MonoBehaviour
 {
     // Start is called before the first frame update
+    public float pos_x, pos_y;
     public int max_health;
     public int now_health;
     public int money;
@@ -28,7 +29,8 @@ public class Character : MonoBehaviour
         staticBuf.Add("jinji", 0);
         staticBuf.Add("fangyu", 0);
         battlemanager = GameObject.Find("battleManager").GetComponent<battleManager>();
-       
+        pos_x = transform.position.x;
+        pos_y = transform.position.y;
         //Debug.Log(this.transform.position);
     }
     public void getStarted()
@@ -103,11 +105,10 @@ public class Character : MonoBehaviour
         GameObject state_obj = new GameObject(state);
         Texture2D state_icon = Resources.Load<Texture2D>(CardManager.state_icon_map[state]);
         Sprite state_sp = Sprite.Create(state_icon, new Rect(0, 0, state_icon.width, state_icon.height), Vector2.one * 0.5f);
-        state_obj.transform.localPosition = transform.localPosition+ new Vector3(-0.8f, -1f, 0) + count*new Vector3(0.4f,0,0);
+        state_obj.transform.localPosition = new Vector3(pos_x, pos_y, 0)+ new Vector3(-0.8f, -1f, 0) + count*new Vector3(0.4f,0,0);
         state_obj.transform.SetParent(state_block.transform);
         SpriteRenderer energy_render = state_obj.AddComponent<SpriteRenderer>();
         energy_render.sprite = state_sp;
-
 
         GameObject val_obj = new GameObject(state + val.ToString());
         TextMeshPro state_val = val_obj.AddComponent<TextMeshPro>();

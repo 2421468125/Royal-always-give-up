@@ -76,6 +76,7 @@ public class battleManager : MonoBehaviour
     }
     private void phase8()
     { // 敌人回合结束
+        CHM.Rebuild();
         phase2();
     }
     private void phase9()

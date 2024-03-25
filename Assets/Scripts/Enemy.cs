@@ -14,10 +14,9 @@ public class Enemy : Character
     // Start is called before the first frame update
     //Getbuff buff;
     public bool dir;
-    static public int att=6;
     public bool attack;
     Vector3 fward=new(-1,0,0),begin,end;
-    public float speed=20f;
+    public float speed=100f;
     CharacterManager characterManager;
     public int damage;
     public Bloodbar bar;
@@ -43,15 +42,13 @@ public class Enemy : Character
         begin=transform.localPosition;
         characterManager = GameObject.Find("CharacterManager").GetComponent<CharacterManager>();
         hero = GameObject.Find("Hero").GetComponent<Hero>();
-        end = transform.position - new Vector3(5, 0, 0);
+        end = transform.position - new Vector3(1, 0, 0);
         speed=100f;
         fward=new(-1,0,0);
         go= Instantiate(Resources.Load("Slider") as GameObject,canvas.transform);
         bar=go.GetComponent<Bloodbar>();
         bar.transform.localPosition = new Vector3(45, -70, 0) + Vector3.right* (int)(transform.localPosition.x / 3) * 140;
         State =0;
-
-
         SetIntention();
     }
 
@@ -60,7 +57,7 @@ public class Enemy : Character
         intention_obj = new GameObject("Intention");
         intention_obj.transform.localPosition = transform.position + IntentionMoveUp;
         intention = intention_obj.AddComponent<TextMeshPro>();
-        intention.text = "6";
+        intention.text = Getintension();
         intention.font = BaseCards.font ;
         intention.fontStyle = FontStyles.Bold;
         intention.fontSize = 4;
@@ -72,7 +69,10 @@ public class Enemy : Character
         if (State == 1)
         {
             transform.position = Vector3.Lerp(transform.position, end, 0.1f);
-            if (transform.position.x <= end.x + 0.2) State = 2;
+            if (transform.position.x <= end.x + 0.2){ 
+                State = 2;
+                Conductintension();
+            }
         }
 
         if (State == 2)
@@ -118,11 +118,6 @@ public class Enemy : Character
         characterManager.num--;
     }
 
-    public virtual void enemy_turn() 
-    {
-        int real_damage = battlemanager.attack(this, hero, 6);
-        hero.Hurt(real_damage);
-        //State = 1;
-    }
+
     
 }
