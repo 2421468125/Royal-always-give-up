@@ -9,6 +9,7 @@ using System.Security.Cryptography;
 using System;
 using Unity.VisualScripting;
 using TMPro;
+using UnityEngine.UI;
 
 public class battleManager : MonoBehaviour
 {
@@ -53,10 +54,11 @@ public class battleManager : MonoBehaviour
         Hero.soul_count = GameObject.Find("soul_text").GetComponent<TextMeshProUGUI>();
         Hero.energy_text = GameObject.Find("energy").GetComponent<TextMeshProUGUI>();
         Hero.hp_in_bar = GameObject.Find("health").GetComponent<TextMeshProUGUI>();
-        Hero.bar = GameObject.Find("bloodbar2").GetComponent<Bloodbar>();
+        //Hero.bar = GameObject.Find("bloodbar2").GetComponent<Bloodbar>();
         CM.card_count = GameObject.Find("card_num").GetComponent<TextMeshProUGUI>();
         CM.draw_card_count = GameObject.Find("drawcard_count").GetComponent<TextMeshProUGUI>();
         CM.dis_card_count = GameObject.Find("discard_count").GetComponent<TextMeshProUGUI>();
+        GameObject.Find("takeAll").GetComponent<Button>().onClick.AddListener(CM.Turn_end);
         CHM = GameObject.Find("CharacterManager").GetComponent<CharacterManager>();
         CM.ClearAllList();
         CM.CopyCardList();
@@ -86,9 +88,16 @@ public class battleManager : MonoBehaviour
     }
     private void phase6()
     { // 回合结束 && 敌人回合开始
-        phase6_1();
-        CM.Discard();
-        phase6_2();
+        if (CHM.num == 0)
+        {
+            changeState(9);
+        }
+        else {
+            phase6_1();
+            CM.Discard();
+            phase6_2(); 
+        }
+        
     }
     private void phase6_1()
     { // 我方回合结束

@@ -10,6 +10,8 @@ public class CharacterManager : MonoBehaviour
     public int num=0;
     public List<Enemy> EnemyList;
     Hero Man;
+    GameObject go;
+    private Canvas canvas;
     battleManager battlemanager;
     private int state = 0;
     static public Dictionary<float, int> enemy_index =  new Dictionary<float, int>();
@@ -25,13 +27,17 @@ public class CharacterManager : MonoBehaviour
         else
             ins = this;
         //DontDestroyOnLoad(this);
+        canvas = FindObjectOfType<Canvas>();
         EnemyList = new List<Enemy>();
         num = 2;
         // num = 3;
-        createmonster(EnemyList, num);
-        battlemanager = GameObject.Find("battleManager").GetComponent<battleManager>();
         GameObject instanceObject = GameObject.Find("Hero");
         Man = instanceObject.GetComponent<Hero>();
+        createmonster(EnemyList, num);
+        go = Instantiate(Resources.Load("Slider") as GameObject,canvas.transform);
+        Man.bar = go.GetComponent<Bloodbar>();
+        battlemanager = GameObject.Find("battleManager").GetComponent<battleManager>();
+        
         state = 0;
     }
 
@@ -62,7 +68,6 @@ public class CharacterManager : MonoBehaviour
                 else state++;
             }
         }
-        endwar();
 
 
 
@@ -103,10 +108,7 @@ public class CharacterManager : MonoBehaviour
         }
         return null;
     }
-    void endwar()
-    {
-        if(num==0) battlemanager.changeState(9);
-    }
+
 
     public void CopyBuff()
     {

@@ -25,7 +25,6 @@ public class Hero: Character
     public TextMeshProUGUI soul_count = null;
     public TextMeshProUGUI energy_text = null;
     public TextMeshProUGUI hp_in_bar = null;
-
     void Start()
     {
         DontDestroyOnLoad(this);
@@ -43,7 +42,8 @@ public class Hero: Character
         now_health=100;
         money=99;
         soul = 0;
-        bar=GameObject.Find("bloodbar2").GetComponent<Bloodbar>();
+        canvas = FindObjectOfType<Canvas>();
+        
         bar.transform.localPosition=new (-195,-70,0);
         max_energy = energy = 3;
         CreateEnergyIcon();

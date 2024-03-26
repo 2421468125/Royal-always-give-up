@@ -32,7 +32,7 @@ public class SceneLock : MonoBehaviour
         if (SceneManager.GetActiveScene().name == "TestScene")
         {
             count += add;
-            if (count >= 10)
+            if (count >= 5)
             {
                 Lock = 1;
                 add = 0;

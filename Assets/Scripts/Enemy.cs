@@ -121,10 +121,6 @@ public class Enemy : Character
         {
             Die();
         }
-        if(characterManager.num==0)
-        {
-            battlemanager.changeState(9);
-        }
     }
     void Die(){
         characterManager.EnemyList.Remove(this);
