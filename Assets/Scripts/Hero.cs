@@ -51,6 +51,8 @@ public class Hero: Character
     // Update is called once per frame
     void Update()
     {
+        if (SceneLock.Lock == 0)
+            return;
         bar.HP.value=(float)now_health/(float)max_health;
         bar.tx.text=now_health.ToString()+"/"+max_health.ToString();
         hp_in_bar.text = now_health.ToString() + "/" + max_health.ToString();

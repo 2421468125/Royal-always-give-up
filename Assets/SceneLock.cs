@@ -6,7 +6,10 @@ using UnityEngine.SceneManagement;
 public class SceneLock : MonoBehaviour
 {
     static SceneLock ins;
+    static battleManager battle_manager;
     public static int Lock = 0;
+    public static int count = 0;
+    public static int  add=1;
     // Start is called before the first frame update
     void Start()
     {
@@ -17,6 +20,7 @@ public class SceneLock : MonoBehaviour
         }
         else
             ins = this;
+        battle_manager = GameObject.Find("battleManager").GetComponent<battleManager>();
         DontDestroyOnLoad(this);
 
     }
@@ -26,8 +30,24 @@ public class SceneLock : MonoBehaviour
     {
         Debug.Log(Lock);
         if (SceneManager.GetActiveScene().name == "TestScene")
-            Lock = 1;
+        {
+            count += add;
+            if (count >= 10)
+            {
+                Lock = 1;
+                add = 0;
+                count = 0;
+                battle_manager.changeState(1);
+            }
+                
+        }
+            
         else
-            Lock = 0 ;
+        {
+            count = 0;
+            Lock = 0;
+            add = 1;
+        }
+            
     }
 }

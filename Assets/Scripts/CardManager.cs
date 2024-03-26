@@ -60,7 +60,7 @@ public class CardManager : MonoBehaviour {
     static public int MaxHandCardNum = 10;
     static public float CardInterval = 1.3f;
     static public float CardHeight = -4f;
-    public List<BaseCards> card_list = new List<BaseCards>();
+    static public List<BaseCards> card_list = new List<BaseCards>();
     public List<BaseCards> card_in_hand = new List<BaseCards>();
     public List<BaseCards> discard_list = new List<BaseCards>();
     public List<BaseCards> exhaust_list = new List<BaseCards>();
@@ -92,7 +92,6 @@ public class CardManager : MonoBehaviour {
         if (ins != null)
         {
             Destroy(this.gameObject);
-            battle_manager.changeState(1);
             return;
         }
         else
@@ -108,16 +107,15 @@ public class CardManager : MonoBehaviour {
         transform.position = Vector3.zero;
         battle_manager = GameObject.Find("battleManager").GetComponent<battleManager> ();
         hero = GameObject.Find("Hero").GetComponent<Hero>();
-        for(int i = 10; i < 40; ++i)
+        for (int i = 10; i < 40; ++i)
         {
             BaseCards card = CardCreate(i);
             if (card != null)
             {
-                draw_card_list.Add(card);
+                card_list.Add(card);
             }
         }
-        battle_manager.changeState(1);
-        
+
     }
 
 
@@ -466,7 +464,6 @@ public class CardManager : MonoBehaviour {
 
     public void StartTurn()
     {
-        battle_manager.changeState(3);
         int real_num = battle_manager.power(3, hero, hero, 5);
         Draw_card(real_num);
         foreach(BaseCards card in card_in_hand)
@@ -474,6 +471,28 @@ public class CardManager : MonoBehaviour {
             card.update_card_use_state();
         }
     }
+
+    public void CopyCardList()
+    {
+        for (int i = 10; i < 40; ++i)
+        {
+            BaseCards card = CardCreate(i);
+            if (card != null)
+            {
+                draw_card_list.Add(card);
+            }
+        }
+    }
+
+    public void ClearAllList()
+    {
+        card_in_hand.Clear();
+        discard_list.Clear();
+        exhaust_list.Clear();
+        draw_card_list.Clear();
+        card_anime_list.Clear();
+        card_destination.Clear();
+}
 
     public void Draw_card(int number)
     {

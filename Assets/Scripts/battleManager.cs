@@ -8,6 +8,7 @@ using UnityEngine.SceneManagement;
 using System.Security.Cryptography;
 using System;
 using Unity.VisualScripting;
+using TMPro;
 
 public class battleManager : MonoBehaviour
 {
@@ -47,11 +48,22 @@ public class battleManager : MonoBehaviour
     }
     private void phase1()
     { //战斗开始
+        Debug.Log("asdafasdd");
+
+        Hero.soul_count = GameObject.Find("soul_text").GetComponent<TextMeshProUGUI>();
+        Hero.energy_text = GameObject.Find("energy").GetComponent<TextMeshProUGUI>();
+        Hero.hp_in_bar = GameObject.Find("health").GetComponent<TextMeshProUGUI>();
+        Hero.bar = GameObject.Find("bloodbar2").GetComponent<Bloodbar>();
+        CM.card_count = GameObject.Find("card_num").GetComponent<TextMeshProUGUI>();
+        CM.draw_card_count = GameObject.Find("drawcard_count").GetComponent<TextMeshProUGUI>();
+        CM.dis_card_count = GameObject.Find("discard_count").GetComponent<TextMeshProUGUI>();
+        CHM = GameObject.Find("CharacterManager").GetComponent<CharacterManager>();
+        CM.ClearAllList();
+        CM.CopyCardList();
         Hero.AddSoul(Hero.money >= 10 ? 10 : Hero.money);
         Hero.money -= Hero.soul;
-        CHM.CopyBuff();
-
-        CM.StartTurn();
+        CHM.CopyBuff();   
+        phase2();
     }
     private void phase2()
     { // 回合开始
@@ -101,6 +113,7 @@ public class battleManager : MonoBehaviour
     { // 战斗结束
         Hero.money += Hero.soul;
         Hero.soul = 0;
+        CM.ClearAllList();
         SceneManager.LoadScene("MapScene");
     }
     private void phase10()
