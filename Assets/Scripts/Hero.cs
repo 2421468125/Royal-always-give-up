@@ -17,10 +17,11 @@ public class Hero: Character
     public Bloodbar bar;
     GameObject go;
     GameObject energy_icon;
-    TextMeshPro energy_text;
     private Canvas canvas;
     public int energy;
     public int max_energy;
+    public TextMeshProUGUI energy_text = null;
+    public TextMeshProUGUI hp_in_bar = null;
 
     void Start()
     {
@@ -40,6 +41,7 @@ public class Hero: Character
     {
         bar.HP.value=(float)now_health/(float)max_health;
         bar.tx.text=now_health.ToString()+"/"+max_health.ToString();
+        hp_in_bar.text = now_health.ToString() + "/" + max_health.ToString();
         UpdateEnergy();
     }
 
@@ -54,28 +56,12 @@ public class Hero: Character
 
     void UpdateEnergy()
     {
-        energy_icon.GetComponentInChildren<TextMeshPro>().text = String.Format("{0}/{1}", energy, max_energy);
+        energy_text.text = String.Format("{0}/{1}", energy, max_energy);
     }
 
     public void CreateEnergyIcon()
     {
-        energy_icon = new GameObject("Energy_Icon");
-        Texture2D icon = Resources.Load<Texture2D>("imgs/characters/ironclad/card_red_orb");
-        Sprite icon_sp = Sprite.Create(icon, new Rect(0, 0, icon.width, icon.height), Vector2.one * 0.5f);
-        energy_icon.transform.localPosition = new Vector3(-8, -2.5f, 0);
-        SpriteRenderer energy_render = energy_icon.AddComponent<SpriteRenderer>();
-        energy_render.sprite = icon_sp;
-
-        GameObject text_obj = new GameObject("CardName");
-        text_obj.transform.localPosition = new Vector3(-8,-2.5f,0);
-        energy_text = text_obj.AddComponent<TextMeshPro>();
-        energy_text.text = String.Format("{0}/{1}",energy,max_energy);
-        energy_text.font = BaseCards.font;
-        energy_text.fontStyle = FontStyles.Bold;
-        energy_text.fontSize = 5;
-        energy_text.autoSizeTextContainer = true;
-        energy_text.transform.SetParent(text_obj.transform);
-        text_obj.transform.SetParent(energy_icon.transform);
+        energy_text.text = String.Format("{0}/{1}", energy, max_energy);
     }
 
 }

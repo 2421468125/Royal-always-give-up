@@ -13,3 +13,4 @@
 12,undo,逆转,技能,value,blue,1,获得x+1点力量。\n x为你的负面效果种类。
 13,bane,灾厄,攻击,value,green,1,你与所有敌人各获得两层易伤。\n对所有敌人造成10点伤害。
 14,suckerPunch,幸运一击,攻击,common,green,0,造成3点伤害。\n获得两点格挡。\n获得3魂。
+15,hunduoshizhong,魂多势众,技能,rare,red,2,你每有5点魂\n获得1点力量与敏捷。

@@ -14,6 +14,7 @@ using UnityEngine.UIElements;
 using static System.Net.Mime.MediaTypeNames;
 using static UnityEngine.RuleTile.TilingRuleOutput;
 using static UnityEngine.EventSystems.EventTrigger;
+using System.Text;
 /*using static UnityEditor.PlayerSettings;*/
 
 
@@ -43,7 +44,7 @@ public class CardManager : MonoBehaviour {
     };//颜色，黑色算诅咒卡
 
     static public Dictionary<string, int> id_map = new Dictionary<string, int>();
-    public static Dictionary<string, int> cost_map = new Dictionary<string, int>();
+    static public Dictionary<string, int> cost_map = new Dictionary<string, int>();
     static public Dictionary<string, Ctype> Ctype_map = new Dictionary<string, Ctype>();
     static public Dictionary<string, Cvalue> Cvalue_map = new Dictionary<string, Cvalue>();
     static public Dictionary<string, Ccolour> Ccolour_map = new Dictionary<string, Ccolour>();
@@ -76,6 +77,10 @@ public class CardManager : MonoBehaviour {
     GameObject end_turn_obj2 = null;
     GameObject dialog_obj = null;
 
+    public TextMeshProUGUI card_count = null;
+    public TextMeshProUGUI draw_card_count = null;
+    public TextMeshProUGUI dis_card_count = null;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -85,34 +90,12 @@ public class CardManager : MonoBehaviour {
         LoadDictionary();
         for (int i = 0; i < 3; i++)
         {
-
+            draw_card_list.Add(new PowerThrough());
             draw_card_list.Add(new Anger());
-            draw_card_list.Add(new IronWave());
+            draw_card_list.Add(new BodySlam());
+            draw_card_list.Add(new LastStrike());
         }
 
-        end_turn_obj1 = new GameObject("EndTurnObject");
-        Texture2D button = Resources.Load<Texture2D>("imgs/reward/takeAll");
-        Sprite button_sp = Sprite.Create(button, new Rect(0, 0, button.width, button.height), Vector2.one * 0.5f);
-        end_turn_obj1.transform.localPosition = new Vector3(7, -2.5f, 0);
-        SpriteRenderer energy_render = end_turn_obj1.AddComponent<SpriteRenderer>();
-        energy_render.sprite = button_sp;
-
-        end_turn_obj2 = new GameObject("EndTurnObject");
-        Texture2D button2 = Resources.Load<Texture2D>("imgs/reward/takeAllUsed");
-        Sprite button_sp2 = Sprite.Create(button2, new Rect(0, 0, button.width, button.height), Vector2.one * 0.5f);
-        end_turn_obj2.transform.localPosition = new Vector3(7, -2.5f, 1);
-        SpriteRenderer energy_render2 = end_turn_obj2.AddComponent<SpriteRenderer>();
-        energy_render2.sprite = button_sp2;
-
-        GameObject text_obj = new GameObject("CardName");
-        text_obj.transform.localPosition = new Vector3(7, -2.45f, 0);
-        TextMeshPro button_text = text_obj.AddComponent<TextMeshPro>();
-        button_text.text = "回合结束";
-        button_text.font = BaseCards.font;
-        button_text.fontStyle = FontStyles.Bold;
-        button_text.fontSize = 4;
-        button_text.autoSizeTextContainer = true;
-        button_text.transform.SetParent(text_obj.transform);
         battle_manager.changeState(1);
         
     }
@@ -123,6 +106,9 @@ public class CardManager : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
+        card_count.text = card_list.Count.ToString();
+        draw_card_count.text = draw_card_list.Count.ToString();
+        dis_card_count.text = discard_list.Count.ToString();
         if ( is_card_anime)
         {
             if(Time.time - anime_start_time > AnimeTime)
@@ -139,7 +125,6 @@ public class CardManager : MonoBehaviour {
             ChooseCard();
             IfUseCard();
             ShowInformation();
-            WaitTurnEnd();
         }
         
     }
@@ -187,6 +172,7 @@ public class CardManager : MonoBehaviour {
             if(hero.energy < card_up._tem_cost)
             {
                 ShowLackEnergy();
+                target = null;
                 return; 
             }
             hero.energy -= card_up._tem_cost;
@@ -216,9 +202,12 @@ public class CardManager : MonoBehaviour {
     void LoadDictionary()
     {
 
-        TextAsset txt = Resources.Load("content/card") as TextAsset;
+
         const int column = 8;
-        string[] data = txt.text.Split("\r\n");
+        string[] data;
+        using (StreamReader reader = new StreamReader("Assets/Resources/content/card.txt", Encoding.UTF8))
+            data = reader.ReadToEnd().Split("\r\n");
+
         for (int i = 1; i < data.Length; i++)
         {
             string[] one_card = data[i].Split(',');
@@ -279,12 +268,13 @@ public class CardManager : MonoBehaviour {
                     Ccolour_map.Add(name, Ccolour.BLACK);
                     break;
             }
-            description_map.Add(name, one_card[7]);
+            description_map.Add(name, one_card[7].Replace("\\n", Environment.NewLine));
         }
 
-        TextAsset txt2 = Resources.Load("content/state_icon") as TextAsset;
-        string[] data2 = txt2.text.Split("\r\n");
-        for(int i=0;i<data2.Length; i++)
+        string[] data2;
+        using (StreamReader reader = new StreamReader("Assets/Resources/content/state_icon.txt", Encoding.UTF8))
+            data2 = reader.ReadToEnd().Split("\r\n");
+        for (int i=0;i<data2.Length; i++)
         {
             string[] one_state = data2[i].Split(',');
             if (data[i].Length < 2)
@@ -337,7 +327,7 @@ public class CardManager : MonoBehaviour {
                 help_obj = new GameObject("HelpInformation");
                 Texture2D reward = Resources.Load<Texture2D>("imgs/reward/rewardListItemPanel");
                 Sprite help_sp = Sprite.Create(reward, new Rect(0, 0, reward.width, reward.height), new(0, 1));
-                help_obj.transform.localPosition = new Vector3(-9.06f, 5.05f, 0);
+                help_obj.transform.localPosition = new Vector3(-9.06f, 4.45f, 0);
                 help_obj.transform.localScale = new Vector3(2f, 1.8f, 1f);
                 SpriteRenderer help_render = help_obj.AddComponent<SpriteRenderer>();
                 help_render.sprite = help_sp;
@@ -345,7 +335,7 @@ public class CardManager : MonoBehaviour {
                 TextMeshPro information = null;
                 GameObject information_obj = new GameObject("information_text");
                 /*information_obj.transform.localPosition = help_obj.transform.localPosition + new Vector3 (1, -1, 0);*/
-                information_obj.transform.localPosition = new Vector3(-4.7f, 4.2f, 0);
+                information_obj.transform.localPosition = new Vector3(-4.7f, 3.6f, 0);
                 information = information_obj.AddComponent<TextMeshPro>();
                 information.text = "消耗：在战斗结束前被移除出牌组。\n虚弱：有虚弱效果的生物用攻击造成的伤害减少25%。";
                 information.font = BaseCards.font;
@@ -369,15 +359,15 @@ public class CardManager : MonoBehaviour {
         dialog_obj = new GameObject("Dialog");
         Texture2D reward = Resources.Load<Texture2D>("imgs/event/dialog_box");
         Sprite dialog_sp = Sprite.Create(reward, new Rect(0, 0, reward.width, reward.height), new(0.5f, 0.5f));
-        dialog_obj.transform.localPosition = new Vector3(-2.74f, 2.23f, 0);
-        dialog_obj.transform.localScale = new Vector3(0.5f, 0.5f, 1f);
+        dialog_obj.transform.localPosition = new Vector3(-2f, 2.23f, 0);
+        dialog_obj.transform.localScale = new Vector3(0.4f, 0.4f, 1f);
         SpriteRenderer dialog_render = dialog_obj.AddComponent<SpriteRenderer>();
         dialog_render.sprite = dialog_sp;
 
         TextMeshPro dialog_text = null;
         GameObject dialog_text_obj = new GameObject("dialog_text");
         /*information_obj.transform.localPosition = help_obj.transform.localPosition + new Vector3 (1, -1, 0);*/
-        dialog_text_obj.transform.localPosition = new Vector3(-2.645f, 2.131f, 0);
+        dialog_text_obj.transform.localPosition = new Vector3(-1.95f, 2.131f, 0);
         dialog_text = dialog_text_obj.AddComponent<TextMeshPro>();
         dialog_text.text = "我没有足够的能量。";
         dialog_text.font = BaseCards.font;
@@ -396,31 +386,6 @@ public class CardManager : MonoBehaviour {
         battle_manager.changeState(3);
         int real_num = battle_manager.power(3, hero, hero, 5);
         Draw_card(real_num);
-    }
-    private void WaitTurnEnd()
-    {
-        if (card_up != null)
-            return;
-        float[] bounds = new float[4];
-        bounds[0] = -1.35f + end_turn_obj1.transform.position.x;
-        bounds[1] = 1.35f + end_turn_obj1.transform.position.x;
-        bounds[2] = -0.3f + end_turn_obj1.transform.position.y;
-        bounds[3] = 0.3f + end_turn_obj1.transform.position.y;
-        float x = Camera.main.ScreenToWorldPoint(Input.mousePosition).x;
-        float y = Camera.main.ScreenToWorldPoint(Input.mousePosition).y;
-
-        if (x > bounds[0] && x < bounds[1] && y > bounds[2] && y < bounds[3])
-        {
-            if (Input.GetMouseButtonDown(0))
-                end_turn_obj1.transform.position= new(end_turn_obj1.transform.position.x, end_turn_obj1.transform.position.y, 2);
-            else if (Input.GetMouseButtonUp(0))
-            {
-                end_turn_obj1.transform.position = new(end_turn_obj1.transform.position.x, end_turn_obj1.transform.position.y, 0);
-                target = null;
-                battle_manager.changeState(6);
-            }
-            
-        }
     }
 
     public void Draw_card(int number)
@@ -512,7 +477,14 @@ public class CardManager : MonoBehaviour {
         is_card_anime = true;
         anime_start_time = Time.time;
     }
+
+    public void Turn_end()
+    {
+        battle_manager.changeState(6);
+    }
 }
+
+
 
 public class BaseCards {
     public GameObject card_obj;
@@ -531,7 +503,7 @@ public class BaseCards {
     private CardManager.Cvalue _value;
     private CardManager.Ccolour _colour;
     
-    static public TMP_FontAsset font = Resources.Load<TMP_FontAsset>("fonts/MSYHBD SDF");
+    static public TMP_FontAsset font = Resources.Load<TMP_FontAsset>("fonts/MSYHL SDF");
 
     static public float BG_z = 1f;
     static public float FG_z = -1f;

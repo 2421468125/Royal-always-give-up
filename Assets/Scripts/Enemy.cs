@@ -28,7 +28,8 @@ public class Enemy : Character
     public TextMeshPro intention;
     static public Vector3 IntentionMoveUp = new Vector3(0, 3,0);
     static public Hero hero;
-
+    GameObject intension_obj;
+    GameObject val_obj;
     public void Start()
     {
         //transform.localPosition=new Vector3(5,1,0);
@@ -52,18 +53,32 @@ public class Enemy : Character
         SetIntention();
     }
 
-    public void SetIntention()
+    public void SetIntention()  
     {
-        intention_obj = new GameObject("Intention");
-        intention_obj.transform.localPosition = transform.position + IntentionMoveUp;
-        intention = intention_obj.AddComponent<TextMeshPro>();
-        intention.text = Getintension();
-        intention.font = BaseCards.font ;
-        intention.fontStyle = FontStyles.Bold;
-        intention.fontSize = 4;
-        intention.autoSizeTextContainer = true;
-/*        card_name.transform.SetParent(card_obj.transform);*/
+        changeintension();
+        Destroy(intension_obj);
+        intension_obj = new GameObject(Getintension());
+        Texture2D intension_icon = Resources.Load<Texture2D>("imgs/intent/" + Getintension());
+
+        Sprite intension_sp = Sprite.Create(intension_icon, new Rect(0, 0, intension_icon.width, intension_icon.height), Vector2.one * 0.5f);
+        intension_obj.transform.localPosition = new Vector3(pos_x, pos_y, 0) + new Vector3(0, 3f, 0); //+ count*new Vector3(0.4f,0,0);
+        intension_obj.transform.SetParent(transform);
+        SpriteRenderer energy_render = intension_obj.AddComponent<SpriteRenderer>();
+        energy_render.sprite = intension_sp;
+
+
+        val_obj = new GameObject(Getintension() + Getvalue().ToString());
+        TextMeshPro state_val = val_obj.AddComponent<TextMeshPro>();
+        state_val.text = Getvalue().ToString();
+        state_val.font = BaseCards.font;
+        state_val.fontSize = 3;
+        state_val.color = Color.cyan;
+        state_val.autoSizeTextContainer = true;
+        state_val.transform.SetParent(val_obj.transform);
+        state_val.transform.localPosition = new Vector3(pos_x, pos_y, 0) + new Vector3(0.2f, 3.0f, 0);
+        state_val.transform.SetParent(intension_obj.transform);
     }
+
     public int  move()
     {
         if (State == 1)
@@ -91,12 +106,13 @@ public class Enemy : Character
     // 选择敌人
     public virtual string Getintension() { return ""; }
     public virtual void Conductintension() { }
-
+    public virtual int Getvalue() { return 0; }
+    public virtual void changeintension() { }
     void Update()
     {
         go.GetComponent<Bloodbar>().HP.value=(float)now_health/(float)max_health;
         go.GetComponent<Bloodbar>().tx.text = now_health.ToString() + "/" + max_health.ToString();
-        if(now_health<0) Die();
+        if(now_health<= 0) Die();
     }
     public override void Hurt(int damage)
     {
@@ -112,7 +128,7 @@ public class Enemy : Character
     }
     void Die(){
         characterManager.EnemyList.Remove(this);
-        Destroy(intention_obj.GetComponent<TextMeshPro>());
+        Destroy(intention_obj);
         Destroy(transform.gameObject);
         Destroy(go);
         characterManager.num--;

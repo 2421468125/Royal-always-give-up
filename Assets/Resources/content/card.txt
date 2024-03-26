@@ -1,13 +1,13 @@
-﻿Id,Name,ChineseName,Type,Value,Color,Cost,Description
+Id,Name,ChineseName,Type,Value,Color,Cost,Description
 1,anger,愤怒,攻击,common,red,0,造成6点伤害。\n在弃牌堆放入一张此牌的复制品。
 2,strike_R,打击 ,攻击,initial,red,1,造成6点伤害。
 3,defend_R,防御,技能,initial,red,1,获得5点格挡。
 4,powerThrough,硬撑,技能,value,red,1,获得15点格挡。\n获得两层脆弱。
 5,recklessCharge,无谋冲锋,攻击,value,red,2,造成40点伤害。\n下回合抽牌减一\n。自负。
-6,ironWave,铁斩波,攻击,common,red,1,造成5点伤害。获得5点格挡。
+6,ironWave,铁斩波,攻击,common,red,1,造成5点伤害。\n获得5点格挡。
 7,bodySlam,全身撞击,攻击,common,red,0,造成已有格挡值的伤害。
 8,corruption,堕落,能力,rare,red,2,每当获得负面效果时\n抽一牌并获得一能量。
-9,wildStrike,最后一击,攻击,common,red,1,造成12点伤害。获得一层虚弱。
+9,wildStrike,最后一击,攻击,common,red,1,造成12点伤害。\n获得一点虚弱。
 10,purity,净化,技能,value,grey,2,清除身上的所有负面效果。\n消耗。
 11,biteaggregate,汲取,技能,value,blue,0,抽x+1张牌。\n x为你的负面效果种类。
 12,undo,逆转,技能,value,blue,1,获得x+1点力量。\n x为你的负面效果种类。

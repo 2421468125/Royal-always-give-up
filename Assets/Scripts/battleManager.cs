@@ -138,7 +138,7 @@ public class battleManager : MonoBehaviour
         float realAttack = (float)val + (float)srcBuf["liliang"];
         if (dstBuf["yishang"] != 0) realAttack *= 1.5f;
         if (srcBuf["xuruo"] != 0) realAttack *= 0.75f;
-        if (dstBuf["jinji"] != 0) dst.Hurt(dstBuf["jinji"]);
+        if (dstBuf["jingji"] != 0) dst.Hurt(dstBuf["jingji"]);
         int realAttackToInt = (int)realAttack;
         return realAttackToInt;
     }

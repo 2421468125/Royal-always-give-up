@@ -26,7 +26,7 @@ public class Character : MonoBehaviour
         staticBuf.Add("xuruo",0); //虚弱回合数量
         staticBuf.Add("minjie",0); //敏捷
         staticBuf.Add("cuiruo",0);
-        staticBuf.Add("jinji", 0);
+        staticBuf.Add("jingji", 0);
         staticBuf.Add("fangyu", 0);
         battlemanager = GameObject.Find("battleManager").GetComponent<battleManager>();
         pos_x = transform.position.x;
@@ -68,11 +68,15 @@ public class Character : MonoBehaviour
 
     public void Defend(int defense)
     {
-        string[] buff = { "fangyu" };
-        int[] val = { dynamicBuf["fangyu"]+defense };
-        ChangeState(buff,val);
+        AddState("fangyu",defense);
     }
 
+
+    public void AddState(string buff, int val)
+    {
+        dynamicBuf[buff] += val;
+        UpdateState();
+    }
 
     public void ChangeState(string[] buff, int[] val)
     {

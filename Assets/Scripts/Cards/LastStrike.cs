@@ -2,19 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BodySlam : BaseCards
+public class LastStrike : BaseCards
 {
-    public int damage;
-    public BodySlam() : base("bodySlam")
+    public int damage,weak;
+    public LastStrike() : base("wildStrike")
     {
-        damage = 0;
+        damage = 12;
+        weak = 1;
     }
 
     public override void Use(Character target)
     {
-        damage = CardManager.hero.dynamicBuf["fangyu"];
+
         int real_damage = battle_manager.power(1, CardManager.hero, target, damage);
         target.Hurt(real_damage);
-
+        CardManager.hero.AddState("xuruo", 1);
     }
 }
