@@ -8,9 +8,8 @@ public class SceneSwitchOnClickBeginning : MonoBehaviour
     // Start is called before the first frame update
     public string targetSceneName; // 目标场景的名称
     public float size = 0.2f;
-    private void OnMouseDow()
+    private void OnMouseDown()
     {
-        Debug.Log(222);
         SceneManager.LoadScene(targetSceneName);
     }
     void Start()
@@ -22,7 +21,7 @@ public class SceneSwitchOnClickBeginning : MonoBehaviour
     void Update()
     {
         if (Input.GetMouseButtonDown(0) && ClickInBounds())
-            OnMouseDow();
+            OnMouseDown();
     }
 
 
@@ -31,7 +30,7 @@ public class SceneSwitchOnClickBeginning : MonoBehaviour
         float x = Camera.main.ScreenToWorldPoint(Input.mousePosition).x;
         float y = Camera.main.ScreenToWorldPoint(Input.mousePosition).y;
         float[] bounds = { transform.position.x, transform.position.y };
-        if (bounds[0] - size < x && bounds[0] + size > x && bounds[1] - size < y && bounds[1] + size > y)
+        if (bounds[0] - size < x && bounds[1] + size > x && bounds[1] - size < y && bounds[1] + size > y)
             return true;
         return false;
     }
