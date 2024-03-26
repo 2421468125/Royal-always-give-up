@@ -34,10 +34,11 @@ public class CharacterManager : MonoBehaviour
         GameObject instanceObject = GameObject.Find("Hero");
         Man = instanceObject.GetComponent<Hero>();
         createmonster(EnemyList, num);
-        go = Instantiate(Resources.Load("Slider") as GameObject,canvas.transform);
+        // go = Instantiate(Resources.Load("Slider") as GameObject,canvas.transform);
+        go = Instantiate(Resources.Load("Slider") as GameObject, canvas.transform.GetChild(0));
         Man.bar = go.GetComponent<Bloodbar>();
         battlemanager = GameObject.Find("battleManager").GetComponent<battleManager>();
-        
+        Man.bar.transform.localPosition = new(-195, -270, 0);
         state = 0;
     }
 

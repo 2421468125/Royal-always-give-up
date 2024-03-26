@@ -46,9 +46,10 @@ public class Enemy : Character
         end = transform.position - new Vector3(1, 0, 0);
         speed=100f;
         fward=new(-1,0,0);
-        go= Instantiate(Resources.Load("Slider") as GameObject,canvas.transform);
-        bar=go.GetComponent<Bloodbar>();
-        bar.transform.localPosition = new Vector3(45, -70, 0) + Vector3.right* (int)(transform.localPosition.x / 3) * 140;
+        // go= Instantiate(Resources.Load("Slider") as GameObject,canvas.transform);
+        go = Instantiate(Resources.Load("Slider") as GameObject, canvas.transform.GetChild(0));
+        bar =go.GetComponent<Bloodbar>();
+        bar.transform.localPosition = new Vector3(45, -270, 0) + Vector3.right* (int)(transform.localPosition.x / 3) * 140;
         State =0;
         SetIntention();
     }

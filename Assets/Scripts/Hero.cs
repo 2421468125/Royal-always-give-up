@@ -44,7 +44,7 @@ public class Hero: Character
         soul = 0;
         canvas = FindObjectOfType<Canvas>();
         
-        bar.transform.localPosition=new (-195,-70,0);
+        bar.transform.localPosition=new (-195,-270,0);
         max_energy = energy = 3;
         CreateEnergyIcon();
     }
