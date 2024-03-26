@@ -6,33 +6,51 @@ using JetBrains.Annotations;
 using UnityEngine.Timeline;
 using UnityEngine.SceneManagement;
 using System.Security.Cryptography;
+using System;
+using Unity.VisualScripting;
 
 public class battleManager : MonoBehaviour
 {
     // Start is called before the first frame update
-    public static battleManager ins = null;
+    public static battleManager ins;
     public CardManager CM = null;
     public CharacterManager CHM = null;
     public int cost = 0;
     public Hero Hero;
     public Dictionary<string, int> heroBuf;
     public Dictionary<string, int> enemyBuf;
+    public bufType BT;
+
     void Start()
     {
-        if (ins == null)
+        if (ins != null)
         {
-            ins = this;
+            Destroy(this.gameObject);
+            return;
         }
-        else Destroy(this);
+        else
+            ins = this;
+        DontDestroyOnLoad(this);
         CM = GameObject.Find("CardManager").GetComponent<CardManager>();
         CHM = GameObject.Find("CharacterManager").GetComponent<CharacterManager>();
         Hero = GameObject.Find("Hero").GetComponent<Hero>();
+        BT = new bufType();
         Debug.Assert(CM != null);
         Debug.Assert(Hero != null);
     }
+
+
+    private void Update()
+    {
+        if (SceneLock.Lock == 0)
+            return;
+    }
     private void phase1()
     { //战斗开始
+        Hero.AddSoul(Hero.money >= 10 ? 10 : Hero.money);
+        Hero.money -= Hero.soul;
         CHM.CopyBuff();
+
         CM.StartTurn();
     }
     private void phase2()
@@ -81,8 +99,9 @@ public class battleManager : MonoBehaviour
     }
     private void phase9()
     { // 战斗结束
-
-        SceneManager.LoadScene("AfterBattleScene");
+        Hero.money += Hero.soul;
+        Hero.soul = 0;
+        SceneManager.LoadScene("MapScene");
     }
     private void phase10()
     { // 洗牌
@@ -155,6 +174,12 @@ public class battleManager : MonoBehaviour
     {
         return val;
     }
+
+    public int getSoul(Character src, Character dst, int val)
+    {
+        return val;
+    }
+
     public int power(int x, Character src = null, Character dst = null, int val = -1)
     {
         switch (x)
@@ -165,8 +190,23 @@ public class battleManager : MonoBehaviour
                 return defend(src, dst, val);
             case 3:
                 return draw(src, dst, val);
+            case 4:
+                return getSoul(src, dst, val);
             default:
                 return -1;
+        }
+    }
+
+    public void changeBuf(string bufName, Character src, Character dst, int val)
+    {
+        Dictionary<string, int> srcBuf = src.dynamicBuf;
+        Dictionary<string, int> dstBuf = dst.dynamicBuf;
+        dst.AddState(bufName, val);
+        if (BT.dic[bufName] == 1 && dst.name == "Hero" && dstBuf["duoluo"] == 1)
+        {
+            CM.Draw_card(1);
+            Hero.energy++;
+            Hero.UpdateEnergy();
         }
     }
 }

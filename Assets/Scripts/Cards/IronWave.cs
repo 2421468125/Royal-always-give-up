@@ -10,6 +10,7 @@ public class IronWave : BaseCards
     {
         damage = 5;
         defense = 5;
+        helper = new string[1] { "fangyu" };
     }
 
     public override void Use(Character target)

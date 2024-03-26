@@ -9,6 +9,7 @@ public class PowerThrough : BaseCards
     {
         defend = 15;
         frail = 2;
+        helper = new string[2] { "fangyu","cuiruo" };
     }
 
     public override void Use(Character target)

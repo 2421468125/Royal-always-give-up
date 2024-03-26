@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6970424993125876321}
   - component: {fileID: 5346713324391814879}
   - component: {fileID: 1734930142094134015}
-  - component: {fileID: -657508145335254409}
+  - component: {fileID: -2773366189147307003}
   m_Layer: 0
   m_Name: elite
   m_TagString: Untagged
@@ -131,7 +131,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.96, y: 0.96}
   m_EdgeRadius: 0
---- !u!114 &-657508145335254409
+--- !u!114 &-2773366189147307003
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -140,8 +140,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 6589961451275426160}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 71fcabbcfccf3a642a2d1bddcc2db235, type: 3}
+  m_Script: {fileID: 11500000, guid: a0828b9366556da44805afdc91777610, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetSceneName: TestScene
-  size: 0.2
+  targetSceneName: BattleScene
+  size: 1.5
+  laye: 2
+  point_num: 2

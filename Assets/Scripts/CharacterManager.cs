@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using TMPro;
 public class CharacterManager : MonoBehaviour
 {
+    static CharacterManager ins;
     public int num=0;
     public List<Enemy> EnemyList;
     Hero Man;
@@ -15,9 +16,17 @@ public class CharacterManager : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
+        Debug.Log(111);
+        if (ins != null)
+        {
+            Destroy(this);
+            return;
+        }
+        else
+            ins = this;
+        //DontDestroyOnLoad(this);
         EnemyList = new List<Enemy>();
         num = 2;
-
         // num = 3;
         createmonster(EnemyList, num);
         battlemanager = GameObject.Find("battleManager").GetComponent<battleManager>();
@@ -33,6 +42,8 @@ public class CharacterManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (SceneLock.Lock == 0)
+            return;
         for(int i=0;i<EnemyList.Count;i++)
         {
             if (state != i + 1) continue;

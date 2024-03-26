@@ -1,15 +1,33 @@
-Id,Name,ChineseName,Type,Value,Color,Cost,Description
+﻿Id,Name,ChineseName,Type,Value,Color,Cost,Description
 1,anger,愤怒,攻击,common,red,0,造成6点伤害。\n在弃牌堆放入一张此牌的复制品。
 2,strike_R,打击 ,攻击,initial,red,1,造成6点伤害。
 3,defend_R,防御,技能,initial,red,1,获得5点格挡。
-4,powerThrough,硬撑,技能,value,red,1,获得15点格挡。\n获得两层脆弱。
-5,recklessCharge,无谋冲锋,攻击,value,red,2,造成40点伤害。\n下回合抽牌减一\n。自负。
-6,ironWave,铁斩波,攻击,common,red,1,造成5点伤害。\n获得5点格挡。
+4,powerThrough,硬撑,技能,value,red,1,获得15点格挡。\n获得2层脆弱。
+5,recklessCharge,无谋冲锋,攻击,value,red,2,造成40点伤害。\n下回合抽牌减1\n。自负。
+6,ironWave,铁斩波,攻击,common,red,1,造成5点伤害。获得5点格挡。
 7,bodySlam,全身撞击,攻击,common,red,0,造成已有格挡值的伤害。
-8,corruption,堕落,能力,rare,red,2,每当获得负面效果时\n抽一牌并获得一能量。
-9,wildStrike,最后一击,攻击,common,red,1,造成12点伤害。\n获得一点虚弱。
-10,purity,净化,技能,value,grey,2,清除身上的所有负面效果。\n消耗。
+8,corruption,堕落,能力,rare,red,2,每当获得负面效果时\n抽1牌并获得1能量。
+9,wildStrike,最后一击,攻击,common,red,1,造成12点伤害。获得1层虚弱。
+10,purity,净化,技能,value,grey,2,清除身上的所有负面效果。\n每消除1种获得1能量。消耗。
 11,biteaggregate,汲取,技能,value,blue,0,抽x+1张牌。\n x为你的负面效果种类。
 12,undo,逆转,技能,value,blue,1,获得x+1点力量。\n x为你的负面效果种类。
 13,bane,灾厄,攻击,value,green,1,你与所有敌人各获得两层易伤。\n对所有敌人造成10点伤害。
-14,suckerPunch,幸运一击,攻击,common,green,0,造成3点伤害。\n获得两点格挡。\n获得3魂。
+14,handOfGreed,贪婪之手,攻击,value,grey,2,造成18点伤害\n获得15魂。自负。
+15,hunduoshizhong,魂多势众,技能,rare,red,2,你每有5点魂\n获得1点力量与敏捷。
+16,steamPower,透支,技能,common,blue,0,若魂不少于5\n扣除5点魂并抽3张牌
+17,justLucky,幸运一击,攻击,common,red,0,造成3点伤害。\n获得两点格挡。\n获得3魂。
+18,blur,护身,技能,common,green,1,获得6点防御\n若魂不少于6，扣除6魂再获得6点防御。
+19,doubleEnergy,聚集,技能,value,blue,0,将你的魂翻倍。消耗。
+20,combust,同归于尽,能力,value,blue,1,每当你获得负面效果时\n给予所有敌人一层相同的负面效果。
+21,moneyIsPower,钞能力,能力,rare,blue,2,每当你获得魂时\n获得1点力量。
+22,demonForm,恶魔契约,能力,value,red,1,每当你使用魂时\n抽一张牌。
+23,whiteNoise,上贡,技能,common,blue,0,扣除最多10金币\n获得10魂。消耗。
+24,linghunchongji,灵魂冲击,攻击,value,red,1,造成等同于魂数量的伤害。
+25,buffer,核心护盾,能力,value,blue,1,每回合结束时\n扣除3点魂，获得6点防御。
+26,offering,祭品,技能,rare,red,0,获得3层诅咒\n获得2点能量，抽3张牌。\n消耗。
+27,creativeAi,魂魄再生,能力,rare,blue,3,每回合开始时获得10魂。虚无。
+28,pommelStrike,剑柄打击,攻击,common,red,1,造成9点伤害。\n抽1张牌。
+29,clothesline,金刚臂,攻击,common,red,2,造成12点伤害。\n给予目标2层虚弱。
+30,clash,交锋,攻击,common,red,0,只有在手牌每一张牌都是攻击牌时才能被打出。\n造成14点伤害。
+31,shrugItOff,耸肩无视,技能,common,red,1,获得8点格挡。\n抽1张牌。
+32,shockwave,震荡波,技能,value,red,2,给予所有敌人3层虚弱和易伤。\n消耗。

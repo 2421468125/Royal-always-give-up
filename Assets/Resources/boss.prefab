@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 9011122616205572747}
   - component: {fileID: 4485754546464754549}
   - component: {fileID: 5738633316010519493}
-  - component: {fileID: 1570889548514009166}
+  - component: {fileID: 7231276272788404009}
   m_Layer: 0
   m_Name: boss
   m_TagString: Untagged
@@ -131,7 +131,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 6.12, y: 5.08}
   m_EdgeRadius: 0
---- !u!114 &1570889548514009166
+--- !u!114 &7231276272788404009
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -140,8 +140,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 7031007492768251995}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 71fcabbcfccf3a642a2d1bddcc2db235, type: 3}
+  m_Script: {fileID: 11500000, guid: a0828b9366556da44805afdc91777610, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetSceneName: TestScene
-  size: 0.2
+  targetSceneName: BattleScene
+  size: 1.5
+  laye: 2
+  point_num: 2

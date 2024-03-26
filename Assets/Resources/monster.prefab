@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 688395403611870562}
   - component: {fileID: 1971178670746878878}
   - component: {fileID: 5049101680039215331}
-  - component: {fileID: 353305862414300125}
+  - component: {fileID: -738735877358477955}
   m_Layer: 0
   m_Name: monster
   m_TagString: Untagged
@@ -131,7 +131,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.96, y: 0.96}
   m_EdgeRadius: 0
---- !u!114 &353305862414300125
+--- !u!114 &-738735877358477955
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -140,8 +140,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 3551200044986188664}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 71fcabbcfccf3a642a2d1bddcc2db235, type: 3}
+  m_Script: {fileID: 11500000, guid: a0828b9366556da44805afdc91777610, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   targetSceneName: TestScene
-  size: 0.2
+  size: 1.5
+  laye: 2
+  point_num: 2

@@ -43,6 +43,8 @@ public class CardManager : MonoBehaviour {
         BLACK
     };//颜色，黑色算诅咒卡
 
+    private static CardManager ins;
+
     static public Dictionary<string, int> id_map = new Dictionary<string, int>();
     static public Dictionary<string, int> cost_map = new Dictionary<string, int>();
     static public Dictionary<string, Ctype> Ctype_map = new Dictionary<string, Ctype>();
@@ -51,24 +53,26 @@ public class CardManager : MonoBehaviour {
     static public Dictionary<string, string> description_map = new Dictionary<string, string>();
     static public Dictionary<string, string> chinese_name_map = new Dictionary<string, string>();
     static public Dictionary <string, string> state_icon_map  = new Dictionary<string, string>();
+    static public Dictionary<string,string> helper_map = new Dictionary<string, string>();
+    static public List<BaseCards> card_library = new List<BaseCards>();
 
 
     static public int MaxHandCardNum = 10;
     static public float CardInterval = 1.3f;
     static public float CardHeight = -4f;
-    static public float AnimeTime = 1.5f;
     public List<BaseCards> card_list = new List<BaseCards>();
     public List<BaseCards> card_in_hand = new List<BaseCards>();
     public List<BaseCards> discard_list = new List<BaseCards>();
+    public List<BaseCards> exhaust_list = new List<BaseCards>();
     public List<BaseCards> draw_card_list= new List<BaseCards>();
     public List<BaseCards> card_anime_list = new List<BaseCards>();
-    public List<Vector3> card_destination = new List<Vector3>();
+    public List <Vector3> card_destination = new List<Vector3>();
 
     private bool is_card_anime = false;
     private float anime_start_time = 0f;
     private BaseCards which_arrow = null;
     
-    public battleManager battle_manager;
+    static public battleManager battle_manager;
     static public Hero hero;
     static public BaseCards card_up = null;
     static public Character target = null;
@@ -81,21 +85,37 @@ public class CardManager : MonoBehaviour {
     public TextMeshProUGUI draw_card_count = null;
     public TextMeshProUGUI dis_card_count = null;
 
+
+    private void Awake()
+    {
+        Debug.Log("Awake");
+        if (ins != null)
+        {
+            Destroy(this.gameObject);
+            battle_manager.changeState(1);
+            return;
+        }
+        else
+            ins = this;
+
+        DontDestroyOnLoad(this);
+        LoadDictionary();
+    }
     // Start is called before the first frame update
     void Start()
     {
+       
         transform.position = Vector3.zero;
         battle_manager = GameObject.Find("battleManager").GetComponent<battleManager> ();
         hero = GameObject.Find("Hero").GetComponent<Hero>();
-        LoadDictionary();
-        for (int i = 0; i < 3; i++)
+        for(int i = 10; i < 40; ++i)
         {
-            draw_card_list.Add(new PowerThrough());
-            draw_card_list.Add(new Anger());
-            draw_card_list.Add(new BodySlam());
-            draw_card_list.Add(new LastStrike());
+            BaseCards card = CardCreate(i);
+            if (card != null)
+            {
+                draw_card_list.Add(card);
+            }
         }
-
         battle_manager.changeState(1);
         
     }
@@ -106,22 +126,26 @@ public class CardManager : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
+        if (SceneLock.Lock == 0)
+            return;
         card_count.text = card_list.Count.ToString();
         draw_card_count.text = draw_card_list.Count.ToString();
         dis_card_count.text = discard_list.Count.ToString();
         if ( is_card_anime)
         {
-            if(Time.time - anime_start_time > AnimeTime)
-            {
-                is_card_anime = false;
-            }
+            is_card_anime = false;
             for(int i=0;i<card_anime_list.Count;++i)
             {
-                card_anime_list[i].card_obj.transform.position = Vector3.Lerp(card_anime_list[i].card_obj.transform.position, card_destination[i],0.2f);
+                if ((card_anime_list[i].card_obj.transform.position - card_destination[i]).magnitude > 0.1f)
+                {
+                    card_anime_list[i].card_obj.transform.position = Vector3.Lerp(card_anime_list[i].card_obj.transform.position, card_destination[i], 0.2f);
+                    is_card_anime = true;
+                }
             }
         }
         else
         {
+            
             ChooseCard();
             IfUseCard();
             ShowInformation();
@@ -167,7 +191,7 @@ public class CardManager : MonoBehaviour {
 
     private void IfUseCard()
     {
-        if (target != null && card_up != null)
+        if (target != null && card_up != null && card_up.can_be_used)
         {
             if(hero.energy < card_up._tem_cost)
             {
@@ -181,7 +205,11 @@ public class CardManager : MonoBehaviour {
             battle_manager.changeState(5);
             if (card_up.isExhaust)
             {
-                Debug.Log("Exhaust");
+                card_in_hand.Remove(card_up);
+                exhaust_list.Add(card_up);
+                CardAnimation();
+                card_anime_list.Add(card_up);
+                card_destination.Add(new Vector3(10, CardHeight, 0));
             }
             else
             {
@@ -193,10 +221,16 @@ public class CardManager : MonoBehaviour {
             }
             card_up.isChoosed = false;
             card_up.isMoved = false;
-            target = null;
             card_up = null;
             which_arrow = null;
+            target = null;
             DrawBesselArrow(which_arrow);
+        }
+        if (card_up != null && ! card_up.can_be_used)
+                target = null;
+        foreach (BaseCards card in card_in_hand)
+        {
+            card.update_card_use_state();
         }
     }
     void LoadDictionary()
@@ -277,12 +311,61 @@ public class CardManager : MonoBehaviour {
         for (int i=0;i<data2.Length; i++)
         {
             string[] one_state = data2[i].Split(',');
-            if (data[i].Length < 2)
+            if (data2[i].Length < 2)
                 break;
             state_icon_map.Add(one_state[0], "imgs/state/" + one_state[1]);
         }
+
+        string[] data3;
+        using (StreamReader reader = new StreamReader("Assets/Resources/content/power.txt", Encoding.UTF8))
+            data3 = reader.ReadToEnd().Split("\r\n");
+        for (int i = 0; i < data3.Length; i++)
+        {
+            string[] one_state = data3[i].Split(',');
+            if (data3[i].Length < 2)
+                break;
+            helper_map.Add(one_state[0], one_state[1].Replace("\\n", Environment.NewLine));
+        }
     }
 
+    public BaseCards CardCreate(int i)
+    {
+        switch (i)
+        {
+            case 1:
+                return new Anger();
+            case 2:
+                return new Strike_R();
+            case 3:
+                return new Defend_R();
+            case 4:
+                return new PowerThrough();
+            case 6:
+                return new IronWave();
+            case 7:
+                return new BodySlam();
+            case 9:
+                return new LastStrike();
+            case 17:
+                return new JustLucky();
+            case 18:
+                return new Blur();
+            case 19:
+                return new DoubleSoul();
+            case 28:
+                return new PommelStrike();
+            case 29:
+                return new Clothesline();
+            case 30:
+                return new Clash();
+            case 31:
+                return new ShrugltOff();
+            case 32:
+                return new Shockwave();
+            default:
+                return null;
+        }
+    }
 
     public bool[] IsTouched(Vector3 p, float[] bounds)
     {
@@ -337,7 +420,7 @@ public class CardManager : MonoBehaviour {
                 /*information_obj.transform.localPosition = help_obj.transform.localPosition + new Vector3 (1, -1, 0);*/
                 information_obj.transform.localPosition = new Vector3(-4.7f, 3.6f, 0);
                 information = information_obj.AddComponent<TextMeshPro>();
-                information.text = "消耗：在战斗结束前被移除出牌组。\n虚弱：有虚弱效果的生物用攻击造成的伤害减少25%。";
+                information.text = card_up.GetHelper();
                 information.font = BaseCards.font;
                 information.fontStyle = FontStyles.Bold;
                 information.fontSize = 3f;
@@ -374,8 +457,8 @@ public class CardManager : MonoBehaviour {
         dialog_text.fontStyle = FontStyles.Bold;
         dialog_text.fontSize = 3f;
         dialog_text.autoSizeTextContainer = true;
-        dialog_text.color = new Color32(28, 33, 40, 255);
-        dialog_text.outlineWidth = 0.2f;
+        dialog_text.color = new Color32(18, 23, 30, 255);
+        dialog_text.outlineWidth = 0.1f;
         dialog_text.outlineColor = Color.white;
         dialog_text.transform.SetParent(dialog_obj.transform);
         Destroy(dialog_obj, 1f);
@@ -386,6 +469,10 @@ public class CardManager : MonoBehaviour {
         battle_manager.changeState(3);
         int real_num = battle_manager.power(3, hero, hero, 5);
         Draw_card(real_num);
+        foreach(BaseCards card in card_in_hand)
+        {
+            card.update_card_use_state();
+        }
     }
 
     public void Draw_card(int number)
@@ -480,7 +567,8 @@ public class CardManager : MonoBehaviour {
 
     public void Turn_end()
     {
-        battle_manager.changeState(6);
+        if (card_up == null)
+            battle_manager.changeState(6);
     }
 }
 
@@ -499,11 +587,11 @@ public class BaseCards {
     private int _id;
     public int _cost, _tem_cost;
     private string _name, _chinese_name, _type_des, _desription;
-    private CardManager.Ctype _type;
-    private CardManager.Cvalue _value;
-    private CardManager.Ccolour _colour;
+    public CardManager.Ctype _type;
+    public CardManager.Cvalue _value;
+    public CardManager.Ccolour _colour;
     
-    static public TMP_FontAsset font = Resources.Load<TMP_FontAsset>("fonts/MSYHL SDF");
+    static public TMP_FontAsset font = Resources.Load<TMP_FontAsset>("fonts/MSYH SDF");
 
     static public float BG_z = 1f;
     static public float FG_z = -1f;
@@ -518,6 +606,7 @@ public class BaseCards {
     static private float DeltaDescription = -0.5f;
     public CardManager card_manager;
     public battleManager battle_manager;
+    public CharacterManager character_manager;
 
     private static Vector2 DeltaCardType = new Vector2(0.01f, -0.119f);
     private static Vector2 DeltaCardCost = new Vector2(-0.674f, 0.968f);
@@ -525,11 +614,11 @@ public class BaseCards {
     public bool isMoved = false;
     public bool isChoosed = false;
 
-    private bool isplayable = false;
+    public bool can_be_used = true;
     public bool isExhaust = false;
-    private bool isArrogant = false;
-    private bool isEthereal = false;
-
+    public bool isArrogant = false;
+    public bool isEthereal = false;
+    public string[] helper;
     public BaseCards(string name)
     {
         _name = name;
@@ -548,6 +637,7 @@ public class BaseCards {
         _tem_cost = _cost;
         battle_manager = GameObject.Find("battleManager").GetComponent<battleManager>();
         card_manager = GameObject.Find("CardManager").GetComponent<CardManager>();
+        character_manager = GameObject.Find("CharacterManager").GetComponent<CharacterManager>();
         set_texture();
 
         GameObject bg_obj = new GameObject("BackGround");
@@ -706,6 +796,11 @@ public class BaseCards {
         return ! isEthereal;
     }
 
+    public virtual void update_card_use_state()
+    {
+
+    }
+
 
     public void ChangeZ(GameObject obj, float z)
     {
@@ -741,4 +836,15 @@ public class BaseCards {
         return coordinates;
     }
 
+    public string GetHelper()
+    {
+        string result = "";
+        if (helper == null)
+            return result;
+        foreach(string info  in helper)
+        {
+            result = result + CardManager.helper_map[info]+Environment.NewLine;
+        }
+        return result;
+    }
 }

@@ -123,17 +123,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!114 &3644870 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4359678322719969498, guid: 45a1ffb0d52f05b41ac5e7d42605a06c, type: 3}
-  m_PrefabInstance: {fileID: 4257258721766273609}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8c60e69b2803bf8498137c859591cf05, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &409748287
 GameObject:
   m_ObjectHideFlags: 0
@@ -215,10 +204,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f889192f101999b45be73f3b67540611, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CM: {fileID: 1960164724}
+  CM: {fileID: 0}
   CHM: {fileID: 0}
   cost: 0
-  Hero: {fileID: 3644870}
+  Hero: {fileID: 0}
 --- !u!4 &424130948
 Transform:
   m_ObjectHideFlags: 0
@@ -375,7 +364,7 @@ GameObject:
   - component: {fileID: 519420032}
   - component: {fileID: 519420031}
   - component: {fileID: 519420029}
-  - component: {fileID: 519420034}
+  - component: {fileID: 519420033}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -457,7 +446,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &519420034
+--- !u!114 &519420033
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -466,7 +455,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 519420028}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 63b0facf35a47d346a981bb3adcb2cb9, type: 3}
+  m_Script: {fileID: 11500000, guid: ab8555be52f20e3418cd5c938ac45cc1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &630286119
@@ -548,6 +537,50 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &900864316
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 900864318}
+  - component: {fileID: 900864317}
+  m_Layer: 0
+  m_Name: Lock
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &900864317
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 900864316}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab8555be52f20e3418cd5c938ac45cc1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &900864318
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 900864316}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.6718789, y: -1.0529501, z: 0.33893773}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &906055185 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4713878009755236493, guid: 179bb0886914620408d5bccbb74580db, type: 3}
@@ -562,6 +595,17 @@ MonoBehaviour:
 --- !u!114 &908953796 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6798458549926961742, guid: 179bb0886914620408d5bccbb74580db, type: 3}
+  m_PrefabInstance: {fileID: 1219678510}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &914783211 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5813487524208903942, guid: 179bb0886914620408d5bccbb74580db, type: 3}
   m_PrefabInstance: {fileID: 1219678510}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
@@ -740,7 +784,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   card_destination: []
-  battle_manager: {fileID: 0}
   card_count: {fileID: 906055185}
   draw_card_count: {fileID: 908953796}
   dis_card_count: {fileID: 1449556864}
@@ -786,6 +829,10 @@ PrefabInstance:
       propertyPath: hp_in_bar
       value: 
       objectReference: {fileID: 2014257655}
+    - target: {fileID: 4359678322719969498, guid: 45a1ffb0d52f05b41ac5e7d42605a06c, type: 3}
+      propertyPath: soul_count
+      value: 
+      objectReference: {fileID: 914783211}
     - target: {fileID: 4359678322719969498, guid: 45a1ffb0d52f05b41ac5e7d42605a06c, type: 3}
       propertyPath: energy_text
       value: 
@@ -848,3 +895,4 @@ SceneRoots:
   - {fileID: 518538398}
   - {fileID: 1219678510}
   - {fileID: 519230606}
+  - {fileID: 900864318}

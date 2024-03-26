@@ -10,6 +10,7 @@ public class Defend_R : BaseCards
     public Defend_R() : base("defend_R")
     {
         defense = 5;
+        helper = new string[1] { "fangyu" };
     }
 
     public override void Use(Character target)

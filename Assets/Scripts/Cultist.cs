@@ -12,8 +12,8 @@ public class Cultist : Enemy
     void Start()
     {
         base.Start();
-        now_health = 40;
-        max_health = 40;
+        now_health = 10;
+        max_health = 10;
 
     }
     public override void changeintension()

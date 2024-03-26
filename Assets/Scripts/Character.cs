@@ -1,10 +1,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Security.Cryptography;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class Character : MonoBehaviour
 {
@@ -16,18 +18,14 @@ public class Character : MonoBehaviour
     public Dictionary<string , int > staticBuf= new Dictionary<string, int>();//buff的目录
     public Dictionary<string , int > dynamicBuf= new Dictionary<string, int>();//buff的目录    
     public battleManager battlemanager;
-   
     public Vector3 StateMoveMent = new(-1.5f, 0, 0);
     public GameObject state_block;
     public void Start()
     {
-        staticBuf.Add("yishang",0);//strange数值代表易伤回合数
-        staticBuf.Add("liliang",0);//strange数值代表力量
-        staticBuf.Add("xuruo",0); //虚弱回合数量
-        staticBuf.Add("minjie",0); //敏捷
-        staticBuf.Add("cuiruo",0);
-        staticBuf.Add("jingji", 0);
-        staticBuf.Add("fangyu", 0);
+        foreach(KeyValuePair<string,string>pair in CardManager.state_icon_map)
+        {
+            staticBuf.Add(pair.Key, 0);
+        }
         battlemanager = GameObject.Find("battleManager").GetComponent<battleManager>();
         pos_x = transform.position.x;
         pos_y = transform.position.y;
@@ -35,6 +33,7 @@ public class Character : MonoBehaviour
     }
     public void getStarted()
     {
+        
         dynamicBuf=staticBuf;
         UpdateState();
     }
@@ -93,6 +92,7 @@ public class Character : MonoBehaviour
         if (state_block !=null)
             Destroy(state_block);
         state_block = new GameObject(name + "StateBlock");
+        state_block.transform.SetParent(this.transform);
         int count = 0;
         foreach(KeyValuePair<string,int> pair in dynamicBuf)
         {

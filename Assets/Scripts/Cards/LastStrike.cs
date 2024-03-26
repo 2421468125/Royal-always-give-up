@@ -9,6 +9,7 @@ public class LastStrike : BaseCards
     {
         damage = 12;
         weak = 1;
+        helper = new string[1] { "xuruo" };
     }
 
     public override void Use(Character target)

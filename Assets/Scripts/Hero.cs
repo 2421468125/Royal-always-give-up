@@ -11,26 +11,38 @@ using UnityEngine.UIElements;
 public class Hero: Character
 {
     // Start is called before the first frame update
-   // Getbuff buff;
+    // Getbuff buff;
     //public Bloodbar bar;
-    
+
+    static Hero ins;
     public Bloodbar bar;
     GameObject go;
     GameObject energy_icon;
     private Canvas canvas;
     public int energy;
     public int max_energy;
+    public int soul;
+    public TextMeshProUGUI soul_count = null;
     public TextMeshProUGUI energy_text = null;
     public TextMeshProUGUI hp_in_bar = null;
 
     void Start()
     {
+        DontDestroyOnLoad(this);
+        if (ins != null)
+        {
+            Destroy(this.gameObject);
+            return;
+        }
+        else
+            ins = this;
         base.Start();
         transform.localPosition=new Vector3(-5,-1,0);
         //buff=gameObject.AddComponent<Getbuff>();
         max_health=100;
         now_health=100;
         money=99;
+        soul = 0;
         bar=GameObject.Find("bloodbar2").GetComponent<Bloodbar>();
         bar.transform.localPosition=new (-195,-70,0);
         max_energy = energy = 3;
@@ -54,7 +66,7 @@ public class Hero: Character
         }
     }
 
-    void UpdateEnergy()
+    public void UpdateEnergy()
     {
         energy_text.text = String.Format("{0}/{1}", energy, max_energy);
     }
@@ -64,4 +76,10 @@ public class Hero: Character
         energy_text.text = String.Format("{0}/{1}", energy, max_energy);
     }
 
+
+    public void AddSoul(int num)
+    {
+        soul += num;
+        soul_count.text = soul.ToString();
+    }
 }

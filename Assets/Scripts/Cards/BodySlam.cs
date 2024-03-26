@@ -8,6 +8,7 @@ public class BodySlam : BaseCards
     public BodySlam() : base("bodySlam")
     {
         damage = 0;
+        helper = new string[1] { "fangyu" };
     }
 
     public override void Use(Character target)

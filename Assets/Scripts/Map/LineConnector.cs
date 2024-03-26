@@ -8,7 +8,7 @@ public class LineConnector : MonoBehaviour
 
    // GameObject gameObjectA = GameObject.Find("MapCreate");
     
-    public List<Vector3> startPoints ; // ÆðÊ¼µãµÄTransformÊý×é
+    public List<Vector3> startPoints ; // ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½Transformï¿½ï¿½ï¿½ï¿½
     public List<Vector3> endPoints;
     public int cnt_Points;
     private LineRenderer[] lineRenderers;
@@ -16,30 +16,31 @@ public class LineConnector : MonoBehaviour
     private void Awake()
     {
         
+        //Debug.Log(cnt_Points);
+        //Debug.Log(startPoints.Count);
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í½ï¿½ï¿½ï¿½ï¿½ï¿½
+
         //  Debug.Log(endPoints[13].z);
     }
     private void Update()
     {
-        MapCreate mapCreate = FindObjectOfType<MapCreate>();
-        cnt_Points = mapCreate.cnt_String;
+        //MapCreate mapCreate = FindObjectOfType<MapCreate>();
+        cnt_Points = MapCreate.cnt_String0;
         lineRenderers = new LineRenderer[cnt_Points+3];
-        startPoints = mapCreate.startPoints;
-        endPoints = mapCreate.endPoints;
+        startPoints = MapCreate.startPoints0;
+        endPoints = MapCreate.endPoints0;
         for (int i = 0; i < cnt_Points; i++)
         {
-            GameObject lineObj = new GameObject("Line" + i); // ´´½¨Ò»¸öÐÂµÄÓÎÏ·¶ÔÏóÀ´ÈÝÄÉLineRenderer×é¼þ
-            lineRenderers[i] = lineObj.AddComponent<LineRenderer>(); // Ìí¼ÓLineRenderer×é¼þ
-            // ÉèÖÃLineRendererÊôÐÔ
+            GameObject lineObj = new GameObject("Line" + i); // ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½Âµï¿½ï¿½ï¿½Ï·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½LineRendererï¿½ï¿½ï¿½
+            lineRenderers[i] = lineObj.AddComponent<LineRenderer>(); // ï¿½ï¿½ï¿½ï¿½LineRendererï¿½ï¿½ï¿½
+            // ï¿½ï¿½ï¿½ï¿½LineRendererï¿½ï¿½ï¿½ï¿½
             lineRenderers[i].positionCount = 2;
             lineRenderers[i].startWidth = 0.2f;
             lineRenderers[i].endWidth = 0.2f;
             lineRenderers[i].sortingOrder = 2;
             lineRenderers[i].material = defaultLineMaterial;
         }
-        //Debug.Log(cnt_Points);
-        //Debug.Log(startPoints.Count);
-        // ÉèÖÃÆðµãºÍ½áÊøµã
-        for (int i = 0; i < cnt_Points; i++)
+              for (int i = 0; i < cnt_Points; i++)
         {
             if (startPoints[i] != null && endPoints[i] != null)
             {
@@ -47,6 +48,5 @@ public class LineConnector : MonoBehaviour
                 lineRenderers[i].SetPosition(1, endPoints[i]);
             }
         }
-
     }
 }

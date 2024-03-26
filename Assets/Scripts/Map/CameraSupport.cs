@@ -6,10 +6,18 @@ public class CameraSupport : MonoBehaviour
 {
     // Start is called before the first frame update
     private float CameraMoveSpeed = 30f;
-    public static Vector3 cameraPosition;
+    static public Vector3 cameraPosition;
     void Start()
-    {
-        
+    {    
+        if (SceneCreateManager.cameraGenerated == false)
+        {
+            cameraPosition.x = 0;
+            cameraPosition.y = -100;
+            cameraPosition.z = -10;
+
+        }
+        transform.localPosition = cameraPosition;
+        SceneCreateManager.cameraGenerated = true;
     }
 
     // Update is called once per frame

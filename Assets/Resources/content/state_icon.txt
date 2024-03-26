@@ -7,3 +7,11 @@ jingji,thorns
 fangyu,next_turn_block
 yishi,ritual
 rengongzhipin,artifact
+zuzhou,poison
+choupaijianyi,no_draw
+hexinhudun,barricade
+duoluo,corruption
+tongguiyujin,combust
+chaonengli,moeyispower
+emoqiyue,emoqiyue
+hunpozaisheng,hunpozaisheng
