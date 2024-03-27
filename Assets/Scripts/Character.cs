@@ -20,11 +20,12 @@ public class Character : MonoBehaviour
     public battleManager battlemanager;
     public Vector3 StateMoveMent = new(-1.5f, 0, 0);
     public GameObject state_block;
-    public void Start()
+    virtual public void Start()
     {
         foreach(KeyValuePair<string,string>pair in CardManager.state_icon_map)
         {
             staticBuf.Add(pair.Key, 0);
+            dynamicBuf.Add(pair.Key, 0);
         }
         battlemanager = GameObject.Find("battleManager").GetComponent<battleManager>();
         pos_x = transform.position.x;
@@ -33,8 +34,10 @@ public class Character : MonoBehaviour
     }
     public void getStarted()
     {
-        
-        dynamicBuf=staticBuf;
+        foreach(KeyValuePair<string,int>pair in staticBuf)
+        {
+            dynamicBuf[pair.Key] = pair.Value;
+        }
         UpdateState();
     }
 

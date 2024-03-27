@@ -17,7 +17,6 @@ public class Clothesline : BaseCards {
 
         int real_damage = battle_manager.power(1, CardManager.hero, target, damage);
         target.Hurt(real_damage);
-        //target.AddState("xuruo", weak);
         battle_manager.changeBuf("xuruo", CardManager.hero, target, weak);
     }
 }

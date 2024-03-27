@@ -17,6 +17,6 @@ public class LastStrike : BaseCards
 
         int real_damage = battle_manager.power(1, CardManager.hero, target, damage);
         target.Hurt(real_damage);
-        CardManager.hero.AddState("xuruo", 1);
+        battle_manager.changeBuf("xuruo", CardManager.hero, CardManager.hero, weak);
     }
 }

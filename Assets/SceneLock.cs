@@ -28,7 +28,6 @@ public class SceneLock : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(Lock);
         if (SceneManager.GetActiveScene().name == "TestScene")
         {
             count += add;

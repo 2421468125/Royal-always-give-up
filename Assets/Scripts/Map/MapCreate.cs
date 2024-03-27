@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.VisualScripting;
-using static UnityEditor.Experimental.GraphView.GraphView;
+/*using static UnityEditor.Experimental.GraphView.GraphView;*/
 
 public struct data
 {
@@ -46,7 +46,7 @@ public class MapCreate : MonoBehaviour
     public static List<Vector3> endPoints0;
     public static int[,,] If_connectted0 = new int[20, 10, 10]; //第i层j个是否和第i+1层k个相连
     public static int[,] If_addressable0 = new int[20, 10];
-
+    public static int laye_now,point_now;
 
     Vector3 P;
 

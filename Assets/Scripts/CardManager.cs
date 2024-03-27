@@ -56,7 +56,7 @@ public class CardManager : MonoBehaviour {
     static public Dictionary<string,string> helper_map = new Dictionary<string, string>();
     static public List<BaseCards> card_library = new List<BaseCards>();
 
-
+    static public int TotalCard = 32;
     static public int MaxHandCardNum = 10;
     static public float CardInterval = 1.3f;
     static public float CardHeight = -4f;
@@ -68,11 +68,12 @@ public class CardManager : MonoBehaviour {
     public List<BaseCards> card_anime_list = new List<BaseCards>();
     public List <Vector3> card_destination = new List<Vector3>();
 
-    private bool is_card_anime = false;
+    public bool is_card_anime = false;
     private float anime_start_time = 0f;
     private BaseCards which_arrow = null;
     
     static public battleManager battle_manager;
+    static public CharacterManager character_manager;
     static public Hero hero;
     static public BaseCards card_up = null;
     static public Character target = null;
@@ -106,8 +107,9 @@ public class CardManager : MonoBehaviour {
        
         transform.position = Vector3.zero;
         battle_manager = GameObject.Find("battleManager").GetComponent<battleManager> ();
+        character_manager = GameObject.Find("CharacterManager").GetComponent<CharacterManager>();
         hero = GameObject.Find("Hero").GetComponent<Hero>();
-        for (int i = 10; i < 40; ++i)
+        for (int i = 1; i <TotalCard+1 ; ++i)
         {
             BaseCards card = CardCreate(i);
             if (card != null)
@@ -237,8 +239,9 @@ public class CardManager : MonoBehaviour {
 
         const int column = 8;
         string[] data;
-        using (StreamReader reader = new StreamReader("Assets/Resources/content/card.txt", Encoding.UTF8))
-            data = reader.ReadToEnd().Split("\r\n");
+        TextAsset t1 = Resources.Load<TextAsset>("content/card");
+        data = t1.text.Split("\r\n");
+
 
         for (int i = 1; i < data.Length; i++)
         {
@@ -303,9 +306,9 @@ public class CardManager : MonoBehaviour {
             description_map.Add(name, one_card[7].Replace("\\n", Environment.NewLine));
         }
 
+        TextAsset t2 = Resources.Load<TextAsset>("content/state_icon");
         string[] data2;
-        using (StreamReader reader = new StreamReader("Assets/Resources/content/state_icon.txt", Encoding.UTF8))
-            data2 = reader.ReadToEnd().Split("\r\n");
+        data2 = t2.text.Split("\r\n");
         for (int i=0;i<data2.Length; i++)
         {
             string[] one_state = data2[i].Split(',');
@@ -314,9 +317,9 @@ public class CardManager : MonoBehaviour {
             state_icon_map.Add(one_state[0], "imgs/state/" + one_state[1]);
         }
 
+        TextAsset t3 = Resources.Load<TextAsset>("content/power");
         string[] data3;
-        using (StreamReader reader = new StreamReader("Assets/Resources/content/power.txt", Encoding.UTF8))
-            data3 = reader.ReadToEnd().Split("\r\n");
+        data3 = t3.text.Split("\r\n");
         for (int i = 0; i < data3.Length; i++)
         {
             string[] one_state = data3[i].Split(',');
@@ -338,18 +341,52 @@ public class CardManager : MonoBehaviour {
                 return new Defend_R();
             case 4:
                 return new PowerThrough();
+            case 5:
+                return new RecklessCharge();
             case 6:
                 return new IronWave();
             case 7:
                 return new BodySlam();
+            case 8:
+                return new Corruption();
             case 9:
                 return new LastStrike();
+            case 10:
+                return new Purity();
+            case 11:
+                return new Aggregate();
+            case 12:
+                return new Undo();
+            case 13:
+                return new Bane();
+            case 14:
+                return new HandOfGreed();
+            case 15:
+                return new Hunduoshizhong();
+            case 16:
+                return new SteamPower();
             case 17:
                 return new JustLucky();
             case 18:
                 return new Blur();
             case 19:
                 return new DoubleSoul();
+            case 20:
+                return new Combust();
+            case 21:
+                return new MoneyIsPower();
+            case 22:
+                return new DemonForm();
+            case 23:
+                return new ShangGong();
+            case 24:
+                return new Linghunchongji();
+            case 25:
+                return new Buffer();
+            case 26:
+                return new Offering();
+            case 27:
+                return new CreativeAi();
             case 28:
                 return new PommelStrike();
             case 29:
@@ -363,6 +400,15 @@ public class CardManager : MonoBehaviour {
             default:
                 return null;
         }
+    }
+
+    public BaseCards  GetCardReward(int id, Vector3 pos)
+    {
+        BaseCards card = CardCreate(id);
+        if (card == null)
+            return null;
+        card.card_obj.transform.position = pos;
+        return card;
     }
 
     public bool[] IsTouched(Vector3 p, float[] bounds)
@@ -474,14 +520,13 @@ public class CardManager : MonoBehaviour {
 
     public void CopyCardList()
     {
-        for (int i = 10; i < 40; ++i)
+        foreach(BaseCards card in card_list)
         {
-            BaseCards card = CardCreate(i);
-            if (card != null)
-            {
-                draw_card_list.Add(card);
-            }
+            int id = card._id;
+            draw_card_list.Add(CardCreate(id));
         }
+        Shuffle(draw_card_list);
+        
     }
 
     public void ClearAllList()
@@ -587,7 +632,11 @@ public class CardManager : MonoBehaviour {
     public void Turn_end()
     {
         if (card_up == null)
+        {
             battle_manager.changeState(6);
+            Debug.Log("why");
+        }
+            
     }
 }
 
@@ -603,7 +652,7 @@ public class BaseCards {
     private TextMeshPro card_cost;
 
     private float pos_x, pos_y, pos_z;
-    private int _id;
+    public int _id;
     public int _cost, _tem_cost;
     private string _name, _chinese_name, _type_des, _desription;
     public CardManager.Ctype _type;
@@ -625,7 +674,6 @@ public class BaseCards {
     static private float DeltaDescription = -0.5f;
     public CardManager card_manager;
     public battleManager battle_manager;
-    public CharacterManager character_manager;
 
     private static Vector2 DeltaCardType = new Vector2(0.01f, -0.119f);
     private static Vector2 DeltaCardCost = new Vector2(-0.674f, 0.968f);
@@ -656,7 +704,6 @@ public class BaseCards {
         _tem_cost = _cost;
         battle_manager = GameObject.Find("battleManager").GetComponent<battleManager>();
         card_manager = GameObject.Find("CardManager").GetComponent<CardManager>();
-        character_manager = GameObject.Find("CharacterManager").GetComponent<CharacterManager>();
         set_texture();
 
         GameObject bg_obj = new GameObject("BackGround");
@@ -817,7 +864,17 @@ public class BaseCards {
 
     public virtual void update_card_use_state()
     {
-
+        foreach(BaseCards card in card_manager.card_in_hand)
+        {
+            if (this == card)
+                continue;
+            if (card.isArrogant)
+            {
+                can_be_used = false;
+                return;
+            }
+        }
+        can_be_used= true;
     }
 
 

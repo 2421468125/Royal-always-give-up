@@ -514,7 +514,7 @@ You cannot lose HP until the start of your next turn.  消耗 。
 171 nova 新星
 对所有敌人造成你在本场战斗中打出过的能力牌总数乘以 %d 的伤害。
  
-172 noxiousFumes 毒雾
+172 duwu 毒雾
 在你的回合开始时，给予所有敌人 %d 层 中毒 。
  
 173 offering 祭品

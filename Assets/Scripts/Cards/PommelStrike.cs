@@ -15,8 +15,8 @@ public class PommelStrike : BaseCards {
 
         int real_damage = battle_manager.power(1, CardManager.hero, target, damage);
         target.Hurt(real_damage);
-        card_manager.Draw_card(1);
-        Debug.Log(target);
+        int real_draw = battle_manager.power(3, CardManager.hero, CardManager.hero, 1);
+        card_manager.Draw_card(real_draw);
     }
 }
 

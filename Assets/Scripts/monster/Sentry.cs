@@ -5,20 +5,28 @@ using System.Linq.Expressions;
 using Unity.VisualScripting;
 using UnityEngine;
 using TMPro;
-public class Cultist : Enemy
+public class Sentry : Enemy
 {
-    public int yitu;
+    public int yitu = 1;
     public int choice = 2;//出招
+    int term=1;
     void Start()
     {
-        base.Start();
-        now_health = 10;
-        max_health = 10;
-
+        term=1;
+        yitu = 1; base.Start();
+        now_health = 40;
+        max_health = 40;
     }
     public override void changeintension()
     {
-        yitu = UnityEngine.Random.Range(1, choice + 1);
+        if(term==1){
+            yitu=2;
+            term++;
+        }
+        else{
+            yitu=1;
+            term++;
+        }
     }
     public override string Getintension()
     {
@@ -32,18 +40,18 @@ public class Cultist : Enemy
             case 2:
                 {
                     //battlemanager.defend(this,this,10);
-                    return "defend";
+                    return "debuff1";
                 }
             default: return "?";
         }
     }
-    public override int Getvalue()
+    public override string Getvalue()
     {
         switch (yitu)
         {
-            case 1: return 5; break;
-            case 2: return 10; break;
-            default: return 0;
+            case 1: return "5"; 
+            case 2: return ""; 
+            default: return "";
         }
     }
     public override void Conductintension()
@@ -57,8 +65,7 @@ public class Cultist : Enemy
                 }
             case 2:
                 {
-                    int real_defend = battlemanager.defend(this, this, 10);
-                    this.Defend(real_defend);
+                    battlemanager.changeBuf("yishang",this,hero,1); //少抽一张牌
                     break;
                 }
         }

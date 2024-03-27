@@ -15,6 +15,7 @@ public class Hero: Character
     //public Bloodbar bar;
 
     static Hero ins;
+    public int Layer;
     public Bloodbar bar;
     GameObject go;
     GameObject energy_icon;
@@ -25,6 +26,11 @@ public class Hero: Character
     public TextMeshProUGUI soul_count = null;
     public TextMeshProUGUI energy_text = null;
     public TextMeshProUGUI hp_in_bar = null;
+    public TextMeshProUGUI gold_text = null;
+    private void Awake()
+    {
+        Layer = 1;
+    }
     void Start()
     {
         DontDestroyOnLoad(this);
@@ -43,7 +49,6 @@ public class Hero: Character
         money=99;
         soul = 0;
         canvas = FindObjectOfType<Canvas>();
-        
         bar.transform.localPosition=new (-195,-270,0);
         max_energy = energy = 3;
         CreateEnergyIcon();
@@ -54,8 +59,10 @@ public class Hero: Character
         if (SceneLock.Lock == 0)
             return;
         bar.HP.value=(float)now_health/(float)max_health;
+
         bar.tx.text=now_health.ToString()+"/"+max_health.ToString();
         hp_in_bar.text = now_health.ToString() + "/" + max_health.ToString();
+        gold_text.text = this.money.ToString();
         UpdateEnergy();
     }
 

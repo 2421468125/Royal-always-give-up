@@ -34,7 +34,7 @@ public class SceneSwitchMaprelated : MonoBehaviour
             objectRenderer.material.color = Color.white;
             if (Input.GetMouseButtonDown(0) && ClickInBounds() && (!visited))
             {
-                Debug.Log($"111:{laye}");
+             //   Debug.Log($"visit:{laye}");
                 visited = true;
                 for(int i = 0;i < MapCreate.cnt_layer0[laye+1];i++)
                 {
@@ -48,6 +48,9 @@ public class SceneSwitchMaprelated : MonoBehaviour
                     if (i != point_num)
                         MapCreate.If_addressable0[laye, i] = 0;
                 }
+                MapCreate.If_addressable0[laye,point_num] = 0;
+                MapCreate.laye_now = laye;
+                MapCreate.point_now = point_num;
                 OnMouseDow_();
             }
             

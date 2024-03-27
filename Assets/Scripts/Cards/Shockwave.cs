@@ -9,16 +9,22 @@ public class Shockwave : BaseCards {
     {
         yishang = 3;
         weak = 3;
-        helper = new string[2] { "yishang","xuruo" };
+        helper = new string[3] { "yishang","xuruo" ,"xiaohao"};
         isExhaust = true;
     }
 
     public override void Use(Character target)
     {
-        foreach(Character enemy in character_manager.EnemyList)
+
+        Enemy[] enemies = new Enemy[CardManager.character_manager.EnemyList.Count];
+        for (int i = 0; i < enemies.Length; i++)
+            enemies[i] = CardManager.character_manager.EnemyList[i];
+
+
+        for (int i = 0; i < enemies.Length; i++)
         {
-            enemy.AddState("xuruo", weak);
-            enemy.AddState("yishang", yishang);
+            battle_manager.changeBuf("yishang", CardManager.hero, enemies[i], yishang);
+            battle_manager.changeBuf("xuruo", CardManager.hero, enemies[i], weak);
         }
         
     }

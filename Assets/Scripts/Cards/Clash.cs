@@ -18,7 +18,9 @@ public class Clash : BaseCards {
 
     public override void update_card_use_state()
     {
-        can_be_used = false;
+        base.update_card_use_state();
+        if (can_be_used == false)
+            return;
         foreach (BaseCards card in card_manager.card_in_hand)
         {
             if (card._type != CardManager.Ctype.ATTACK)
@@ -28,6 +30,7 @@ public class Clash : BaseCards {
             }
         }
         can_be_used = true;
+
     }
 }
 
