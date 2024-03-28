@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 using Unity.VisualScripting;
 using UnityEngine;
 using TMPro;
-public class Cultist : Enemy
+public class Cultist: Enemy
 {
     public int yitu;
     public int choice = 2;//出招

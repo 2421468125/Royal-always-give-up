@@ -1,10 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.XR;
 
 public class Clash : BaseCards {
     public int damage;
+    GameObject dialog_obj = null;
+
     public Clash() : base("clash")
     {
         damage = 14;
@@ -30,7 +33,7 @@ public class Clash : BaseCards {
             }
         }
         can_be_used = true;
-
     }
+
 }
 

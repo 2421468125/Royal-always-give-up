@@ -24,15 +24,28 @@ public class battleManager : MonoBehaviour
     public int cost = 0;
     public Hero Hero;
     public Dictionary<string, int> heroBuf;
+    PauseMenu pause_menu;
     public Dictionary<string, int> enemyBuf;
     private bufType bufType;
+    static public int attackCount = 0;
+    static public int skillCount = 0;
+    static public int powerCount = 0;
+    static public bool ifGreedyUsed = false;
     void Start()
     {
         if (ins == null)
         {
             ins = this;
         }
-        else Destroy(this);
+        else
+        {
+            Destroy(this);
+            return;
+        }
+        attackCount = 0;
+        skillCount = 0;
+        powerCount = 0;
+        ifGreedyUsed = false;
         DontDestroyOnLoad(this);
         CM = GameObject.Find("CardManager").GetComponent<CardManager>();
         CHM = GameObject.Find("CharacterManager").GetComponent<CharacterManager>();
@@ -48,6 +61,10 @@ public class battleManager : MonoBehaviour
     }
     private void phase1()
     { //战斗开始
+        attackCount = 0;
+        skillCount = 0;
+        powerCount = 0;
+        ifGreedyUsed = false;
         Hero.Layer++;
         Hero.soul_count = GameObject.Find("soul_text").GetComponent<TextMeshProUGUI>();
         Hero.energy_text = GameObject.Find("energy").GetComponent<TextMeshProUGUI>();
@@ -58,6 +75,8 @@ public class battleManager : MonoBehaviour
         CM.card_count = GameObject.Find("card_num").GetComponent<TextMeshProUGUI>();
         CM.draw_card_count = GameObject.Find("drawcard_count").GetComponent<TextMeshProUGUI>();
         CM.dis_card_count = GameObject.Find("discard_count").GetComponent<TextMeshProUGUI>();
+        CM.consumed_card_count = GameObject.Find("consume_conut").GetComponent<TextMeshProUGUI>();
+        CardManager.character_manager = GameObject.Find("CharacterManager").GetComponent<CharacterManager>();
         Canvas canvas = FindObjectOfType<Canvas>();
         canvas.transform.GetChild(5).GetComponent<Button>().onClick.AddListener(CM.Turn_end);// 5: TakeAll;
         CHM = GameObject.Find("CharacterManager").GetComponent<CharacterManager>();
@@ -70,16 +89,23 @@ public class battleManager : MonoBehaviour
     }
     private void phase2()
     { // 回合开始
-        if(Hero.dynamicBuf["hunpozaisheng"] != 0)
-            for(int i=1;i<=Hero.dynamicBuf["hunpozaisheng"];i++){
-                Hero.AddSoul(getSoul(Hero,Hero,10));
+        if (Hero.persona == 2)
+        {
+            foreach (Enemy enemy in CHM.EnemyList) enemy.Hurt((int)math.floor(Hero.dynamicBuf["fangyu"] / 5f));
+        }
+        if (Hero.dynamicBuf["hunpozaisheng"] != 0)
+            for (int i = 1; i <= Hero.dynamicBuf["hunpozaisheng"]; i++)
+            {
+                Hero.AddSoul(getSoul(Hero, Hero, 10));
             }
         Hero.dynamicBuf["fangyu"] = 0;
         Hero.UpdateState();
         Hero.energy = Mathf.Max(Hero.energy, Hero.max_energy);
         CM.StartTurn();
-        foreach(Enemy enemy in CHM.EnemyList){
-            if(enemy.dynamicBuf["duwu"] != 0){
+        foreach (Enemy enemy in CHM.EnemyList)
+        {
+            if (enemy.dynamicBuf["duwu"] != 0)
+            {
                 Hero.dynamicBuf["zuzhou"] += enemy.dynamicBuf["duwu"];
             }
         }
@@ -95,7 +121,20 @@ public class battleManager : MonoBehaviour
     }
     private void phase5()
     { // 出牌后
-
+        if (CardManager.now_card._type == CardManager.Ctype.ATTACK) attackCount++;
+        else if (CardManager.now_card._type == CardManager.Ctype.SKILL) skillCount++;
+        else if (CardManager.now_card._type == CardManager.Ctype.POWER) powerCount++;
+        if (skillCount >= 5 && Hero.persona == 3 && ifGreedyUsed == false)
+        { //携带贪婪并且未触发
+            Hero.AddSoul(Hero.soul);
+            ifGreedyUsed = true;
+        }
+        if (attackCount % 5 == 0 && Hero.persona == 1)
+        {
+            System.Random random = new System.Random();
+            Enemy randomEnemy = CHM.EnemyList[random.Next(CHM.EnemyList.Count)];
+            randomEnemy.Hurt(10);
+        }
     }
     private void phase6()
     { // 回合结束 && 敌人回合开始
@@ -165,7 +204,12 @@ public class battleManager : MonoBehaviour
         Hero.soul = 0;
         CM.ClearAllList();
         Hero.transform.position += new Vector3(0, 0, 10);
-        SceneManager.LoadScene("SelectCardScene");
+        if(Hero.Layer >= 15)
+        {
+            SceneManager.LoadScene("HeroWinScene");
+        }
+        else
+            PauseMenu.Reward();
 
     }
     private void phase10()
@@ -174,7 +218,8 @@ public class battleManager : MonoBehaviour
     }
     private void phase11()
     { // 主角死亡
-
+        SceneManager.LoadScene("HeroDieScene");
+        Hero.transform.position += new Vector3(0, 0, 10);
     }
     public void changeState(int x)
     {

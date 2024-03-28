@@ -60,6 +60,7 @@ public class CardManager : MonoBehaviour {
     static public int MaxHandCardNum = 10;
     static public float CardInterval = 1.3f;
     static public float CardHeight = -4f;
+    
     static public List<BaseCards> card_list = new List<BaseCards>();
     public List<BaseCards> card_in_hand = new List<BaseCards>();
     public List<BaseCards> discard_list = new List<BaseCards>();
@@ -71,7 +72,8 @@ public class CardManager : MonoBehaviour {
     public bool is_card_anime = false;
     private float anime_start_time = 0f;
     private BaseCards which_arrow = null;
-    
+
+    static public BaseCards now_card;
     static public battleManager battle_manager;
     static public CharacterManager character_manager;
     static public Hero hero;
@@ -85,6 +87,7 @@ public class CardManager : MonoBehaviour {
     public TextMeshProUGUI card_count = null;
     public TextMeshProUGUI draw_card_count = null;
     public TextMeshProUGUI dis_card_count = null;
+    public TextMeshProUGUI consumed_card_count = null;
 
 
     private void Awake()
@@ -109,14 +112,21 @@ public class CardManager : MonoBehaviour {
         battle_manager = GameObject.Find("battleManager").GetComponent<battleManager> ();
         character_manager = GameObject.Find("CharacterManager").GetComponent<CharacterManager>();
         hero = GameObject.Find("Hero").GetComponent<Hero>();
-        for (int i = 1; i <TotalCard+1 ; ++i)
+        for (int i = 0; i < 4; ++i)
         {
-            BaseCards card = CardCreate(i);
+            BaseCards card = CardCreate(2);
             if (card != null)
             {
                 card_list.Add(card);
             }
+            BaseCards card2 = CardCreate(3);
+            if (card != null)
+            {
+                card_list.Add(card2);
+            }
         }
+        card_list.Add(CardCreate(17));
+        card_list.Add(CardCreate(9));
 
     }
 
@@ -131,6 +141,7 @@ public class CardManager : MonoBehaviour {
         card_count.text = card_list.Count.ToString();
         draw_card_count.text = draw_card_list.Count.ToString();
         dis_card_count.text = discard_list.Count.ToString();
+        consumed_card_count.text = exhaust_list.Count.ToString();
         if ( is_card_anime)
         {
             is_card_anime = false;
@@ -150,7 +161,23 @@ public class CardManager : MonoBehaviour {
             IfUseCard();
             ShowInformation();
         }
-        
+        if (Input.GetKeyDown(KeyCode.F1))
+        {
+            card_list = new List<BaseCards>();
+            card_list.Add(CardCreate(2));
+            card_list.Add(CardCreate(3));
+            card_list.Add(CardCreate(9));
+            card_list.Add(CardCreate(17));
+            card_list.Add(CardCreate(15));
+            card_list.Add(CardCreate(19));
+            card_list.Add(CardCreate(19));
+            card_list.Add(CardCreate(24));
+            card_list.Add(CardCreate(16));
+            card_list.Add(CardCreate(4));
+            card_list.Add(CardCreate(25));
+            card_list.Add(CardCreate(6));
+            card_list.Add(CardCreate(26));
+        }
     }
 
     private void ChooseCard()
@@ -191,10 +218,19 @@ public class CardManager : MonoBehaviour {
 
     private void IfUseCard()
     {
-        if (target != null && card_up != null && card_up.can_be_used)
+        if (card_up == null)
+            return;
+        if (!card_up.can_be_used)
+            target = null;
+        if (card_up.can_be_used == false && card_up._id != 30)//不是打交
+            ShowZiFu();
+        if (card_up._id == 30 && card_up.can_be_used == false)
+            ShowCantClash();
+        if (target != null && card_up.can_be_used)
         {
             if(hero.energy < card_up._tem_cost)
             {
+
                 ShowLackEnergy();
                 target = null;
                 return; 
@@ -202,6 +238,7 @@ public class CardManager : MonoBehaviour {
             hero.energy -= card_up._tem_cost;
             battle_manager.changeState(4);
             card_up.Use(target);
+            now_card = card_up;
             battle_manager.changeState(5);
             if (card_up.isExhaust)
             {
@@ -226,8 +263,6 @@ public class CardManager : MonoBehaviour {
             target = null;
             DrawBesselArrow(which_arrow);
         }
-        if (card_up != null && ! card_up.can_be_used)
-                target = null;
         foreach (BaseCards card in card_in_hand)
         {
             card.update_card_use_state();
@@ -449,7 +484,7 @@ public class CardManager : MonoBehaviour {
     {
         if (card_up != null)
         {
-            if (help_obj == null)
+            if (help_obj == null && card_up.GetHelper() != "")
             {
                 help_obj = new GameObject("HelpInformation");
                 Texture2D reward = Resources.Load<Texture2D>("imgs/reward/rewardListItemPanel");
@@ -505,6 +540,65 @@ public class CardManager : MonoBehaviour {
         dialog_text.outlineWidth = 0.1f;
         dialog_text.outlineColor = Color.white;
         dialog_text.transform.SetParent(dialog_obj.transform);
+        Destroy(dialog_obj, 1f);
+    }
+
+
+    void ShowZiFu()
+    {
+        dialog_obj = new GameObject("Dialog");
+        Texture2D reward = Resources.Load<Texture2D>("imgs/event/dialog_box");
+        Sprite dialog_sp = Sprite.Create(reward, new Rect(0, 0, reward.width, reward.height), new(0.5f, 0.5f));
+        dialog_obj.transform.localPosition = new Vector3(-2f, 2.23f, 0);
+        dialog_obj.transform.localScale = new Vector3(0.4f, 0.4f, 1f);
+        SpriteRenderer dialog_render = dialog_obj.AddComponent<SpriteRenderer>();
+        dialog_render.sprite = dialog_sp;
+
+        TextMeshPro dialog_text = null;
+        GameObject dialog_text_obj = new GameObject("dialog_text");
+        /*information_obj.transform.localPosition = help_obj.transform.localPosition + new Vector3 (1, -1, 0);*/
+        dialog_text_obj.transform.localPosition = new Vector3(-1.85f, 2f, 0);
+        dialog_text = dialog_text_obj.AddComponent<TextMeshPro>();
+        dialog_text.text = "我手牌中有自负牌需要打出";
+        dialog_text.font = BaseCards.font;
+        dialog_text.fontStyle = FontStyles.Bold;
+        dialog_text.fontSize = 3f;
+        // dialog_text.autoSizeTextContainer = true;
+        dialog_text.color = new Color32(18, 23, 30, 255);
+        dialog_text.outlineWidth = 0.1f;
+        dialog_text.outlineColor = Color.white;
+        dialog_text.transform.SetParent(dialog_obj.transform);
+        RectTransform rectTransform = dialog_text.GetComponent<RectTransform>();
+        rectTransform.sizeDelta = new Vector2(2.5f, 1f);
+        Destroy(dialog_obj, 1f);
+    }
+
+    void ShowCantClash()
+    {
+        dialog_obj = new GameObject("Dialog");
+        Texture2D reward = Resources.Load<Texture2D>("imgs/event/dialog_box");
+        Sprite dialog_sp = Sprite.Create(reward, new Rect(0, 0, reward.width, reward.height), new(0.5f, 0.5f));
+        dialog_obj.transform.localPosition = new Vector3(-2f, 2.23f, 0);
+        dialog_obj.transform.localScale = new Vector3(0.4f, 0.4f, 1f);
+        SpriteRenderer dialog_render = dialog_obj.AddComponent<SpriteRenderer>();
+        dialog_render.sprite = dialog_sp;
+
+        TextMeshPro dialog_text = null;
+        GameObject dialog_text_obj = new GameObject("dialog_text");
+        /*information_obj.transform.localPosition = help_obj.transform.localPosition + new Vector3 (1, -1, 0);*/
+        dialog_text_obj.transform.localPosition = new Vector3(-1.95f, 2.131f, 0);
+        dialog_text = dialog_text_obj.AddComponent<TextMeshPro>();
+        dialog_text.text = "我手牌中有非攻击牌";
+        dialog_text.font = BaseCards.font;
+        dialog_text.fontStyle = FontStyles.Bold;
+        dialog_text.fontSize = 3f;
+        dialog_text.autoSizeTextContainer = true;
+        dialog_text.color = new Color32(18, 23, 30, 255);
+        dialog_text.outlineWidth = 0.1f;
+        dialog_text.outlineColor = Color.white;
+        dialog_text.transform.SetParent(dialog_obj.transform);
+        // RectTransform rectTransform = dialog_text.GetComponent<RectTransform>();
+        // rectTransform.sizeDelta = new Vector2(2.5f, 1f);
         Destroy(dialog_obj, 1f);
     }
 
@@ -651,7 +745,7 @@ public class BaseCards {
     private TextMeshPro card_type;
     private TextMeshPro card_cost;
 
-    private float pos_x, pos_y, pos_z;
+    public float pos_x, pos_y, pos_z;
     public int _id;
     public int _cost, _tem_cost;
     private string _name, _chinese_name, _type_des, _desription;
@@ -663,11 +757,11 @@ public class BaseCards {
 
     static public float BG_z = 1f;
     static public float FG_z = -1f;
-    static public float font_size = 1;
+    static public float font_size = 1f;
     static public float card_name_font_size = 1.5f;
     static public float card_type_font_size = 0.9f; // 单独定义卡牌类型字体大小 适配显示 
     static public float card_cost_font_size = 3f;
-    static public float description_font_size = 1.15f;
+    static public float description_font_size = 1.35f;
     
     static private float DeltaForeGround = 0.352f;
     static private float DeltaCardName = 0.894f;

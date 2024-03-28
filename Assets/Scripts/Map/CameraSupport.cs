@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class CameraSupport : MonoBehaviour
@@ -20,15 +21,16 @@ public class CameraSupport : MonoBehaviour
         SceneCreateManager.cameraGenerated = true;
     }
 
-    // Update is called once per frame
-    void Update()
+
+
+
+        // Update is called once per frame
+        void Update()
     {
-        Vector3 p = transform.localPosition;
-        if(Input.GetKey(KeyCode.UpArrow))
-            p += ((CameraMoveSpeed * Time.smoothDeltaTime) * transform.up);
-        if(Input.GetKey(KeyCode.DownArrow))
-            p -= ((CameraMoveSpeed * Time.smoothDeltaTime) * transform.up);
-        transform.localPosition = p;
-        cameraPosition = p;
+         Vector3 p = transform.localPosition;
+         float scrollAmount = Input.GetAxis("Mouse ScrollWheel");
+         p += scrollAmount * CameraMoveSpeed * transform.up * Time.smoothDeltaTime * 20;
+         transform.localPosition = p;
+         cameraPosition = p;
     }
 }

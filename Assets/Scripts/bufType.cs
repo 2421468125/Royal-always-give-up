@@ -31,6 +31,6 @@ public class bufType
         dic.Add("chaonengli", 0);
         dic.Add("emoqiyue", 0);
         dic.Add("hunpozaisheng", 0);
-
+        dic.Add("duwu", 0);
     }
 }

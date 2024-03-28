@@ -86,17 +86,18 @@ void createmonster(List<Enemy> ch)
             if (lay == 4)
             {
                 string en = Boss[UnityEngine.Random.Range(0, 2)];
-                GameObject s = Instantiate(Resources.Load("monster/" + en) as GameObject);
+                GameObject s = Instantiate(Resources.Load( en) as GameObject);
                 ch.Add(s.GetComponent<Enemy>());
                 ch[num].transform.localPosition = new(1, -1, 0); //经验参数
                 ch[num].bar.SetBarPosition(new(400, -180, 0));
                 ch[num].bound = s.GetComponent<SpriteRenderer>().sprite.bounds;
                 num++;
+                Man.Layer = 16;
             }
             else if (lay == 5)
             {
                 string en = Severe[UnityEngine.Random.Range(0, 3)];
-                GameObject s = Instantiate(Resources.Load("monster/" + en) as GameObject);
+                GameObject s = Instantiate(Resources.Load( en) as GameObject);
                 ch.Add(s.GetComponent<Enemy>());
                 ch[num].transform.localPosition = new(1, -1, 0); //经验参数
                 ch[num].bar.SetBarPosition(new(400, -180, 0));
@@ -107,7 +108,7 @@ void createmonster(List<Enemy> ch)
                 {
                     for (int i = 1; i <= 2; i++)
                     {
-                        s = Instantiate(Resources.Load("monster/" + en) as GameObject);
+                        s = Instantiate(Resources.Load( en) as GameObject);
                         ch.Add(s.GetComponent<Enemy>());
                         ch[num].transform.localPosition = new(1 + 3 * i, -1, 0); //经验参数
                         ch[num].bar.SetBarPosition(new(400, -180, 0));
@@ -117,7 +118,7 @@ void createmonster(List<Enemy> ch)
                 }
                 else if (en == "serpent")
                 {
-                    s = Instantiate(Resources.Load("monster/" + en) as GameObject);
+                    s = Instantiate(Resources.Load( en) as GameObject);
                     ch.Add(s.GetComponent<Enemy>());
                     ch[num].transform.localPosition = new(4, -1, 0); //经验参数
                     ch[num].bar.SetBarPosition(new(400, -180, 0));
@@ -130,7 +131,7 @@ void createmonster(List<Enemy> ch)
                 if (Man.Layer <= 2)
                 {
                     string en = WeakEnemy[UnityEngine.Random.Range(0, 2)];
-                    GameObject s = Instantiate(Resources.Load("monster/" + en) as GameObject);
+                    GameObject s = Instantiate(Resources.Load(en) as GameObject);
                     ch.Add(s.GetComponent<Enemy>());
                     ch[num].transform.localPosition = new(1, -1, 0); //经验参数
                     ch[num].bar.SetBarPosition(new(400, -180, 0));
@@ -139,13 +140,13 @@ void createmonster(List<Enemy> ch)
                 }
                 else if (Man.Layer == 3)
                 {
-                    GameObject s = Instantiate(Resources.Load("monster/" + "smallslime") as GameObject);
+                    GameObject s = Instantiate(Resources.Load( "smallslime") as GameObject);
                     ch.Add(s.GetComponent<Enemy>());
                     ch[num].transform.localPosition = new(4, -1, 0); //经验参数
                     ch[num].bar.SetBarPosition(new(400, -180, 0));
                     ch[num].bound = s.GetComponent<SpriteRenderer>().sprite.bounds;
                     num++;
-                    s = Instantiate(Resources.Load("monster/" + "sneakygremlin") as GameObject);
+                    s = Instantiate(Resources.Load( "sneakygremlin") as GameObject);
                     ch.Add(s.GetComponent<Enemy>());
                     ch[num].transform.localPosition = new(1, -1, 0); //经验参数
                     ch[num].bar.SetBarPosition(new(400, -180, 0));
@@ -157,7 +158,7 @@ void createmonster(List<Enemy> ch)
                     for (int i = 1; i <= 2; i++)
                     {
                         string en = WeakEnemy[UnityEngine.Random.Range(0, 2)];
-                        GameObject s = Instantiate(Resources.Load("monster/" + en) as GameObject);
+                        GameObject s = Instantiate(Resources.Load( en) as GameObject);
                         ch.Add(s.GetComponent<Enemy>());
                         ch[num].transform.localPosition = new(i * 3 - 2, -1, 0); //经验参数
                         ch[num].bar.SetBarPosition(new(400, -180, 0));
@@ -168,14 +169,14 @@ void createmonster(List<Enemy> ch)
                 else if (Man.Layer == 8)
                 {
                     string en = WeakEnemy[UnityEngine.Random.Range(0, 2)];
-                    GameObject s = Instantiate(Resources.Load("monster/" + en) as GameObject);
+                    GameObject s = Instantiate(Resources.Load( en) as GameObject);
                     ch.Add(s.GetComponent<Enemy>());
                     ch[num].transform.localPosition = new(1, -1, 0); //经验参数
                     ch[num].bar.SetBarPosition(new(400, -180, 0));
                     ch[num].bound = s.GetComponent<SpriteRenderer>().sprite.bounds;
                     num++;
                     en = Moderate[UnityEngine.Random.Range(0, 2)];
-                    s = Instantiate(Resources.Load("monster/" + en) as GameObject);
+                    s = Instantiate(Resources.Load( en) as GameObject);
                     ch.Add(s.GetComponent<Enemy>());
                     ch[num].transform.localPosition = new(4, -1, 0); //经验参数
                     ch[num].bar.SetBarPosition(new(400, -180, 0));
@@ -187,7 +188,7 @@ void createmonster(List<Enemy> ch)
                     for (int i = 1; i <= 2; i++)
                     {
                         string en = Moderate[UnityEngine.Random.Range(0, 2)];
-                        GameObject s = Instantiate(Resources.Load("monster/" + en) as GameObject);
+                        GameObject s = Instantiate(Resources.Load( en) as GameObject);
                         ch.Add(s.GetComponent<Enemy>());
                         ch[num].transform.localPosition = new(i * 3 - 2, -1, 0); //经验参数
                         ch[num].bar.SetBarPosition(new(400, -180, 0));
@@ -200,7 +201,7 @@ void createmonster(List<Enemy> ch)
                     string en = WeakEnemy[UnityEngine.Random.Range(0, 2)];
                     for (int i = 1; i <= 2; i++)
                     {
-                        GameObject s = Instantiate(Resources.Load("monster/" + en) as GameObject);
+                        GameObject s = Instantiate(Resources.Load( en) as GameObject);
                         ch.Add(s.GetComponent<Enemy>());
                         ch[num].transform.localPosition = new(i * 3 - 2, -1, 0); //经验参数
                         ch[num].bar.SetBarPosition(new(400, -180, 0));
@@ -213,7 +214,7 @@ void createmonster(List<Enemy> ch)
                     string en = Moderate[UnityEngine.Random.Range(0, 2)];
                     for (int i = 1; i <= 2; i++)
                     {
-                        GameObject s = Instantiate(Resources.Load("monster/" + en) as GameObject);
+                        GameObject s = Instantiate(Resources.Load( en) as GameObject);
                         ch.Add(s.GetComponent<Enemy>());
                         ch[num].transform.localPosition = new(i * 3 - 2, -1, 0); //经验参数
                         ch[num].bar.SetBarPosition(new(400, -180, 0));

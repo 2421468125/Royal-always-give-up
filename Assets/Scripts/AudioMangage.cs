@@ -17,9 +17,4 @@ public class AudioManager : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
     }
 
-    public void PlayAudio(AudioClip clip)
-    {
-        audioSource.clip = clip;
-        audioSource.Play();
-    }
 }

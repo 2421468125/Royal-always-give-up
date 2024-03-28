@@ -16,16 +16,12 @@ public class Bane : BaseCards
     {
         battle_manager.changeBuf("yishang", CardManager.hero, CardManager.hero, yishang);
 
-        Enemy[] enemies = new Enemy[CardManager.character_manager.EnemyList.Count];
-        for (int i = 0; i < enemies.Length; i++)
-            enemies[i] = CardManager.character_manager.EnemyList[i];
 
-
-        for (int i = 0; i < enemies.Length; i++)
+        for (int i = CardManager.character_manager.EnemyList.Count-1; i >-1 ; i--)
         {
-            battle_manager.changeBuf("yishang", CardManager.hero, enemies[i], yishang);
-            int real_damage = battle_manager.power(1, CardManager.hero, enemies[i], damage);
-            enemies[i].Hurt(real_damage);
+            battle_manager.changeBuf("yishang", CardManager.hero, CardManager.character_manager.EnemyList[i], yishang);
+            int real_damage = battle_manager.power(1, CardManager.hero, CardManager.character_manager.EnemyList[i], damage);
+            CardManager.character_manager.EnemyList[i].Hurt(real_damage);
         }
     }
 }

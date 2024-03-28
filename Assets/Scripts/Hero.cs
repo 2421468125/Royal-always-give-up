@@ -27,9 +27,11 @@ public class Hero: Character
     public TextMeshProUGUI energy_text = null;
     public TextMeshProUGUI hp_in_bar = null;
     public TextMeshProUGUI gold_text = null;
+    public static int persona = 0;
     private void Awake()
     {
         Layer = 1;
+        persona = 0;
     }
     void Start()
     {
@@ -44,19 +46,20 @@ public class Hero: Character
         base.Start();
         transform.localPosition=new Vector3(-5,-1,0);
         //buff=gameObject.AddComponent<Getbuff>();
-        max_health=100;
-        now_health=100;
+        max_health=80;
+        now_health=80;
         money=99;
         soul = 0;
         canvas = FindObjectOfType<Canvas>();
         bar.transform.localPosition=new (-195,-270,0);
         max_energy = energy = 3;
         CreateEnergyIcon();
+        drawPersona();
     }
     // Update is called once per frame
     void Update()
     {
-        if (SceneLock.Lock == 0)
+        if (SceneLock.Lock == 0 ||  bar == null) 
             return;
         bar.HP.value=(float)now_health/(float)max_health;
 
@@ -69,7 +72,7 @@ public class Hero: Character
     public override void Hurt(int damage)
     {
         base.Hurt(damage);
-        if (now_health < 0) {
+        if (now_health <= 0) {
             now_health = 0;
             battlemanager.changeState(11);
         }
@@ -84,7 +87,15 @@ public class Hero: Character
     {
         energy_text.text = String.Format("{0}/{1}", energy, max_energy);
     }
+    public void drawPersona()
+    {
+        GameObject p1; 
+        if (persona == 1) p1 = Instantiate(Resources.Load("baozao") as GameObject, canvas.transform.GetChild(0));
+        else if (persona == 2) p1 = Instantiate(Resources.Load("fuhua") as GameObject, canvas.transform.GetChild(0));
+        else p1 = Instantiate(Resources.Load("tanlan") as GameObject, canvas.transform.GetChild(0));
+        p1.transform.localPosition = new Vector3(-354.4f, -217f, 0);
 
+    }
 
     public void AddSoul(int num)
     {

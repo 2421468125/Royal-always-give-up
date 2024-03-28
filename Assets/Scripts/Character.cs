@@ -89,7 +89,6 @@ public class Character : MonoBehaviour
         UpdateState();
     }
 
-
     public void UpdateState()
     {
         if (state_block !=null)

@@ -75,7 +75,7 @@ public class fireBro : Enemy
         {
             case 1:
                 {
-                    battleManager.changeBuf("noxiousFumes",this,this,1);
+                    battleManager.changeBuf("duwu",this,this,1);
                     break;
                 }
             case 2:

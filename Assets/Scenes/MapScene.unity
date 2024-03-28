@@ -440,8 +440,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71419a49205469541a03f844d771be1a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetSceneName: MenuScene
-  size: 0.2
 --- !u!212 &798013891
 SpriteRenderer:
   m_ObjectHideFlags: 0

@@ -15,18 +15,12 @@ public class Shockwave : BaseCards {
 
     public override void Use(Character target)
     {
-
-        Enemy[] enemies = new Enemy[CardManager.character_manager.EnemyList.Count];
-        for (int i = 0; i < enemies.Length; i++)
-            enemies[i] = CardManager.character_manager.EnemyList[i];
-
-
-        for (int i = 0; i < enemies.Length; i++)
+        for (int i = CardManager.character_manager.EnemyList.Count - 1; i > -1; i--)
         {
-            battle_manager.changeBuf("yishang", CardManager.hero, enemies[i], yishang);
-            battle_manager.changeBuf("xuruo", CardManager.hero, enemies[i], weak);
+            battle_manager.changeBuf("yishang", CardManager.hero, CardManager.character_manager.EnemyList[i], yishang);
+            battle_manager.changeBuf("xuruo", CardManager.hero, CardManager.character_manager.EnemyList[i], weak);
         }
-        
+
     }
 }
 

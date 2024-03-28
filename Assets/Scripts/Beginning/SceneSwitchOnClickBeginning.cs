@@ -5,12 +5,19 @@ using UnityEngine.SceneManagement;
 
 public class SceneSwitchOnClickBeginning : MonoBehaviour
 {
-    // Start is called before the first frame update
-    public string targetSceneName; // 目标场景的名称
-    public float size = 0.2f;
-    private void OnMouseDown()
+    public void StartGame()
     {
-        SceneManager.LoadScene(targetSceneName);
+        SceneManager.LoadScene("MapScene");
+    }
+
+    public void Help()
+    {
+        Debug.Log("help");
+    }
+
+    public void Quit()
+    {
+        Application.Quit();
     }
     void Start()
     {
@@ -20,18 +27,6 @@ public class SceneSwitchOnClickBeginning : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButtonDown(0) && ClickInBounds())
-            OnMouseDown();
     }
 
-
-    bool ClickInBounds()
-    {
-        float x = Camera.main.ScreenToWorldPoint(Input.mousePosition).x;
-        float y = Camera.main.ScreenToWorldPoint(Input.mousePosition).y;
-        float[] bounds = { transform.position.x, transform.position.y };
-        if (bounds[0] - size < x && bounds[1] + size > x && bounds[1] - size < y && bounds[1] + size > y)
-            return true;
-        return false;
-    }
 }
